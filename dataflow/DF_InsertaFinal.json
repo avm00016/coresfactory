@@ -1,0 +1,24 @@
+{
+	"name": "DF_InsertaFinal",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "STGEstablecimientos",
+					"script": "source(output(\n\t\tEstablecimiento_Id as integer,\n\t\tEstablecimiento_Nombre as string,\n\t\tEstablecimiento_Propietario_Id as integer,\n\t\tEstablecimiento_PropietarioCodigo as string,\n\t\tEstablecimiento_Propietario_Nombre as string,\n\t\tEstablecimiento_Agrupacion_Id as integer,\n\t\tEstablecimiento_Agrupacion_Nombre as string,\n\t\tEstablecimiento_TipoID as integer,\n\t\tEstablecimiento_TipoNombre as string,\n\t\tEstablecimiento_Direccion as string,\n\t\tEstablecimiento_Poblacion as string,\n\t\tEstablecmiento_Provincia_Id as integer,\n\t\tEstablecimiento_Provincia_Nombre as string,\n\t\tEstablecimiento_ComunidadAutonoma_Nombre as string,\n\t\tEstablecimiento_ZonaGeografica_Nombre as string,\n\t\tEstablecimiento_CP as string,\n\t\tEstablecimiento_Longitud as decimal(38,12),\n\t\tEstablecimiento_Latitud as decimal(38,12),\n\t\tEstablecimiento_ConectadoSistemaLogistico as string,\n\t\tEstablecimiento_FechaAlta as date,\n\t\tEstablecimiento_FechaBaja as date,\n\t\tEstablecimiento_FechaActualizacion as date,\n\t\tEstablecimiento_FechaCarga as timestamp,\n\t\tEstablecimiento_UsuarioCarga as string,\n\t\tEstablecimiento_FicheroCarga as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true) ~> STGEstablecimientos"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_ASQL_FT_Establecimientos",
+						"type": "DatasetReference"
+					},
+					"name": "FTEstablecimientos",
+					"script": "STGEstablecimientos sink(input(\n\t\tEstablecimiento_Id as integer,\n\t\tEstablecimiento_Nombre as string,\n\t\tEstablecimiento_Propietario_Id as integer,\n\t\tEstablecimiento_PropietarioCodigo as string,\n\t\tEstablecimiento_Propietario_Nombre as string,\n\t\tEstablecimiento_Agrupacion_Id as integer,\n\t\tEstablecimiento_Agrupacion_Nombre as string,\n\t\tEstablecimiento_TipoID as integer,\n\t\tEstablecimiento_TipoNombre as string,\n\t\tEstablecimiento_Direccion as string,\n\t\tEstablecimiento_Poblacion as string,\n\t\tEstablecmiento_Provincia_Id as integer,\n\t\tEstablecimiento_Provincia_Nombre as string,\n\t\tEstablecimiento_ComunidadAutonoma_Nombre as string,\n\t\tEstablecimiento_ZonaGeografica_Nombre as string,\n\t\tEstablecimiento_CP as string,\n\t\tEstablecimiento_Longitud as decimal(38,12),\n\t\tEstablecimiento_Latitud as decimal(38,12),\n\t\tEstablecimiento_ConectadoSistemaLogistico as string,\n\t\tEstablecimiento_FechaAlta as date,\n\t\tEstablecimiento_FechaBaja as date,\n\t\tEstablecimiento_FechaActualizacion as date,\n\t\tEstablecimiento_FechaCarga as timestamp,\n\t\tEstablecimiento_UsuarioCarga as string,\n\t\tEstablecimiento_FicheroCarga as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEstablecimiento_Id,\n\t\tEstablecimiento_Nombre,\n\t\tEstablecimiento_Propietario_Id,\n\t\tEstablecimiento_Propietario_Nombre,\n\t\tEstablecimiento_Agrupacion_Id,\n\t\tEstablecimiento_Agrupacion_Nombre,\n\t\tEstablecimiento_TipoID,\n\t\tEstablecimiento_TipoNombre,\n\t\tEstablecimiento_Direccion,\n\t\tEstablecimiento_Poblacion,\n\t\tEstablecmiento_Provincia_Id,\n\t\tEstablecimiento_Provincia_Nombre,\n\t\tEstablecimiento_ComunidadAutonoma_Nombre,\n\t\tEstablecimiento_ZonaGeografica_Nombre,\n\t\tEstablecimiento_CP,\n\t\tEstablecimiento_Longitud,\n\t\tEstablecimiento_Latitud,\n\t\tEstablecimiento_ConectadoSistemaLogistico,\n\t\tEstablecimiento_FechaAlta,\n\t\tEstablecimiento_FechaBaja,\n\t\tEstablecimiento_FechaActualizacion,\n\t\tEstablecimiento_UsuarioCarga,\n\t\tEstablecimiento_FicheroCarga\n\t),\n\ttruncate:true) ~> FTEstablecimientos"
+				}
+			]
+		}
+	}
+}

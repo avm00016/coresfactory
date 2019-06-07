@@ -1,0 +1,28 @@
+{
+	"name": "DS_CSV_INPUT",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"nombreFichero": {
+				"type": "string"
+			}
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "EST_20190531_134410.csv",
+				"container": "input"
+			},
+			"columnDelimiter": ";",
+			"encodingName": "UTF-16",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

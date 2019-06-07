@@ -1,5 +1,5 @@
 {
-	"name": "DS_ASQL_STG_Establecimientos",
+	"name": "DS_ASQL_FT_Establecimientos",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",
@@ -20,6 +20,10 @@
 				"name": "Establecimiento_Propietario_Id",
 				"type": "int",
 				"precision": 10
+			},
+			{
+				"name": "Establecimiento_PropietarioCodigo",
+				"type": "nvarchar"
 			},
 			{
 				"name": "Establecimiento_Propietario_Nombre",
@@ -101,17 +105,10 @@
 				"type": "date"
 			},
 			{
-				"name": "Establecimiento_ValorRepresentacion",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "Estableciomiento_ConcatenaDescripcion",
-				"type": "nvarchar"
-			},
-			{
 				"name": "Establecimiento_FechaCarga",
-				"type": "timestamp"
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
 			},
 			{
 				"name": "Establecimiento_UsuarioCarga",
@@ -123,8 +120,7 @@
 			}
 		],
 		"typeProperties": {
-			"tableName": "[dbo].[STG_Establecimientos]"
+			"tableName": "[dbo].[FT_Establecimientos]"
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }

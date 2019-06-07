@@ -271,7 +271,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ASQL_STG_ESTABLECIMIENTOS",
+						"referenceName": "DS_ASQL_STG_Establecimientos",
 						"type": "DatasetReference"
 					}
 				]
