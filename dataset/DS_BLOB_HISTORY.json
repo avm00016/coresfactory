@@ -1,0 +1,23 @@
+{
+	"name": "DS_BLOB_HISTORY",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"DestinationFileName": {
+				"type": "string"
+			}
+		},
+		"type": "AzureBlob",
+		"typeProperties": {
+			"fileName": {
+				"value": "@dataset().DestinationFileName",
+				"type": "Expression"
+			},
+			"folderPath": "history"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

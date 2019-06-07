@@ -1,0 +1,356 @@
+{
+	"name": "PL_INSERT_STAGING",
+	"properties": {
+		"activities": [
+			{
+				"name": "CP_LD_STG_EST",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "SetDate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSetting",
+							"recursive": false,
+							"wildcardFileName": "EST*",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSetting"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": {
+							"value": "delete from [dbo].[STG_Establecimientos]",
+							"type": "Expression"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "EstablecimientoId",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "Establecimiento_Id",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "EstablecimientoNombre",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Establecimiento_Nombre",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "PropiedatioId",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "Establecimiento_Propietario_Id",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "PropietarioNombre",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Establecimiento_Propietario_Nombre",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "AgrupacionId",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "Establecimiento_Agrupacion_Id",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "AgrupacionNombre",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Establecimiento_Agrupacion_Nombre",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "TipoId",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "Establecimiento_TipoID",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "TipoNombre",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Establecimiento_TipoNombre",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Direccion",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Establecimiento_Direccion",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Poblacion",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Establecimiento_Poblacion",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ProvinciaId",
+									"type": "Int64"
+								},
+								"sink": {
+									"name": "Establecmiento_Provincia_Id",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "ProvinciaNombre",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Establecimiento_Provincia_Nombre",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ComunidadAutonomaNombre",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Establecimiento_ComunidadAutonoma_Nombre",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ZonaGeograficaNombre",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Establecimiento_ZonaGeografica_Nombre",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "CP",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Establecimiento_CP",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Logitud",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Establecimiento_Longitud",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "Latitud",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "Establecimiento_Latitud",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "ConectadoSL",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Establecimiento_ConectadoSistemaLogistico",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "FechaAlta",
+									"type": "DateTime",
+									"format": "dd/MM/yyyy"
+								},
+								"sink": {
+									"name": "Establecimiento_FechaAlta",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "FechaBaja",
+									"type": "DateTime",
+									"format": "dd/MM/yyyy"
+								},
+								"sink": {
+									"name": "Establecimiento_FechaBaja",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "FechaActualizacion",
+									"type": "DateTime",
+									"format": "dd/MM/yyyy"
+								},
+								"sink": {
+									"name": "Establecimiento_FechaActualizacion",
+									"type": "DateTime"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_CSV_STAGING",
+						"type": "DatasetReference",
+						"parameters": {
+							"fileName": "@pipeline().parameters.sourceFile"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ASQL_STG_ESTABLECIMIENTOS",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "SP_UP_STG_EST",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "CP_LD_STG_EST",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[Update_Campos_Carga]",
+					"storedProcedureParameters": {
+						"nombreFichero": {
+							"value": {
+								"value": "@pipeline().parameters.sourceFile",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"nombreTabla": {
+							"value": "STG_Establecimientos",
+							"type": "String"
+						},
+						"nombreUsuario": {
+							"value": "USUARIO",
+							"type": "String"
+						},
+						"fechaCarga": {
+							"value": {
+								"value": "@variables('currentDate')",
+								"type": "Expression"
+							},
+							"type": "Datetime"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "SetDate",
+				"type": "SetVariable",
+				"typeProperties": {
+					"variableName": "currentDate",
+					"value": {
+						"value": "@utcnow()",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"sourceFolder": {
+				"type": "string"
+			},
+			"sourceFile": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"currentDate": {
+				"type": "String"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
