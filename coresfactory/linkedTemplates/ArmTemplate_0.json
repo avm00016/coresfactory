@@ -29,23 +29,7 @@
 		},
 		"DS_BLOB_INPUT_properties_typeProperties_folderPath": {
 			"type": "string",
-			"defaultValue": "@{dataset().path}"
-		},
-		"DS_BLOB_INPUT_FOLDER_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": ""
-		},
-		"DS_BLOB_INPUT_FOLDER_properties_typeProperties_folderPath": {
-			"type": "string",
 			"defaultValue": "input"
-		},
-		"DS_BLOB_STAGING_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "@dataset().DestinationFileName"
-		},
-		"DS_BLOB_STAGING_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "staging"
 		}
 	},
 	"variables": {
@@ -268,6 +252,10 @@
 						"precision": 10
 					},
 					{
+						"name": "Establecimiento_PropietarioCodigo",
+						"type": "nvarchar"
+					},
+					{
 						"name": "Establecimiento_Propietario_Nombre",
 						"type": "nvarchar"
 					},
@@ -347,17 +335,10 @@
 						"type": "date"
 					},
 					{
-						"name": "Establecimiento_ValorRepresentacion",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Estableciomiento_ConcatenaDescripcion",
-						"type": "nvarchar"
-					},
-					{
 						"name": "Establecimiento_FechaCarga",
-						"type": "timestamp"
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
 					},
 					{
 						"name": "Establecimiento_UsuarioCarga",
@@ -414,9 +395,6 @@
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
-					"path": {
-						"type": "string"
-					},
 					"filename": {
 						"type": "string"
 					}
@@ -428,58 +406,7 @@
 						"value": "[parameters('DS_BLOB_INPUT_properties_typeProperties_fileName')]",
 						"type": "Expression"
 					},
-					"folderPath": {
-						"value": "[parameters('DS_BLOB_INPUT_properties_typeProperties_folderPath')]",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_BLOB_INPUT_FOLDER')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureBlob",
-				"typeProperties": {
-					"fileName": "[parameters('DS_BLOB_INPUT_FOLDER_properties_typeProperties_fileName')]",
-					"folderPath": "[parameters('DS_BLOB_INPUT_FOLDER_properties_typeProperties_folderPath')]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_BLOB_STAGING')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"DestinationFileName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "AzureBlob",
-				"typeProperties": {
-					"fileName": {
-						"value": "[parameters('DS_BLOB_STAGING_properties_typeProperties_fileName')]",
-						"type": "Expression"
-					},
-					"folderPath": "[parameters('DS_BLOB_STAGING_properties_typeProperties_folderPath')]"
+					"folderPath": "[parameters('DS_BLOB_INPUT_properties_typeProperties_folderPath')]"
 				}
 			},
 			"dependsOn": [
@@ -505,42 +432,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "EST_20190531_134410.csv",
 						"container": "input"
-					},
-					"columnDelimiter": ";",
-					"encodingName": "UTF-16",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_CSV_STAGING')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"fileName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "EST_20190531_134410.csv",
-						"container": "staging"
 					},
 					"columnDelimiter": ";",
 					"encodingName": "UTF-16",
@@ -641,335 +533,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/MoveFiles')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "GetFileList",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "DS_BLOB_INPUT_FOLDER",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems"
-							]
-						}
-					},
-					{
-						"name": "FilterFiles",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "GetFileList",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('GetFileList').output.childItems",
-								"type": "Expression"
-							},
-							"condition": {
-								"value": "@contains(pipeline().parameters.filePrefix, substring(item().name,0,3))",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "ForEachFile",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "FilterFiles",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('FilterFiles').output.value",
-								"type": "Expression"
-							},
-							"batchCount": 20,
-							"activities": [
-								{
-									"name": "CD_IN_HIST",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "BlobSource",
-											"recursive": false
-										},
-										"sink": {
-											"type": "BlobSink"
-										},
-										"enableStaging": false,
-										"dataIntegrationUnits": 0
-									},
-									"inputs": [
-										{
-											"referenceName": "DS_BLOB_INPUT",
-											"type": "DatasetReference",
-											"parameters": {
-												"path": "input",
-												"filename": {
-													"value": "@item().name",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "DS_BLOB_HISTORY",
-											"type": "DatasetReference",
-											"parameters": {
-												"DestinationFileName": {
-													"value": "@item().name",
-													"type": "Expression"
-												}
-											}
-										}
-									]
-								},
-								{
-									"name": "DL_IN",
-									"type": "Delete",
-									"dependsOn": [
-										{
-											"activity": "CD_IN_STG",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"dataset": {
-											"referenceName": "DS_BLOB_INPUT",
-											"type": "DatasetReference",
-											"parameters": {
-												"path": "input",
-												"filename": {
-													"value": "@item().name",
-													"type": "Expression"
-												}
-											}
-										},
-										"enableLogging": false
-									}
-								},
-								{
-									"name": "CD_IN_STG",
-									"type": "Copy",
-									"dependsOn": [
-										{
-											"activity": "CD_IN_HIST",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "BlobSource",
-											"recursive": false
-										},
-										"sink": {
-											"type": "BlobSink"
-										},
-										"enableStaging": false
-									},
-									"inputs": [
-										{
-											"referenceName": "DS_BLOB_INPUT",
-											"type": "DatasetReference",
-											"parameters": {
-												"path": "input",
-												"filename": {
-													"value": "@item().name",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "DS_BLOB_STAGING",
-											"type": "DatasetReference",
-											"parameters": {
-												"DestinationFileName": {
-													"value": "@item().name",
-													"type": "Expression"
-												}
-											}
-										}
-									]
-								}
-							]
-						}
-					}
-				],
-				"parameters": {
-					"filePrefix": {
-						"type": "string"
-					},
-					"sourceFolder": {
-						"type": "string"
-					},
-					"sourceFile": {
-						"type": "string"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_BLOB_INPUT_FOLDER')]",
-				"[concat(variables('factoryId'), '/datasets/DS_BLOB_INPUT')]",
-				"[concat(variables('factoryId'), '/datasets/DS_BLOB_HISTORY')]",
-				"[concat(variables('factoryId'), '/datasets/DS_BLOB_STAGING')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_Establecimientos')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "CP_CopiaHistorico",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "SetVariable1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BlobSource",
-								"recursive": false
-							},
-							"sink": {
-								"type": "BlobSink"
-							},
-							"enableStaging": false,
-							"dataIntegrationUnits": 0
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_BLOB_INPUT",
-								"type": "DatasetReference",
-								"parameters": {
-									"path": "input",
-									"filename": {
-										"value": "@pipeline().parameters.nombreFichero",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_BLOB_HISTORY",
-								"type": "DatasetReference",
-								"parameters": {
-									"DestinationFileName": {
-										"value": "@pipeline().parameters.nombreFichero",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					},
-					{
-						"name": "SetVariable1",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "fechaCarga",
-							"value": {
-								"value": "@utcnow()",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"parameters": {
-					"nombreFichero": {
-						"type": "string"
-					},
-					"nombreDirectorio": {
-						"type": "string"
-					}
-				},
-				"variables": {
-					"fechaCarga": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_BLOB_INPUT')]",
-				"[concat(variables('factoryId'), '/datasets/DS_BLOB_HISTORY')]"
 			]
 		},
 		{
@@ -1239,10 +802,13 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DS_CSV_STAGING",
+								"referenceName": "DS_CSV_EST",
 								"type": "DatasetReference",
 								"parameters": {
-									"fileName": "@pipeline().parameters.sourceFile"
+									"nombreFichero": {
+										"value": "@pipeline().parameters.sourceFile",
+										"type": "Expression"
+									}
 								}
 							}
 						],
@@ -1335,178 +901,217 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_CSV_STAGING')]",
+				"[concat(variables('factoryId'), '/datasets/DS_CSV_EST')]",
 				"[concat(variables('factoryId'), '/datasets/DS_ASQL_STG_Establecimientos')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PL_MOVE_FILES')]",
+			"name": "[concat(parameters('factoryName'), '/DF_FT_Establecimientos')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_ASQL_STG_Establecimientos",
+								"type": "DatasetReference"
+							},
+							"name": "STGEstablecimientos",
+							"typeProperties": {},
+							"script": "source(output(\n\t\tEstablecimiento_Id as integer,\n\t\tEstablecimiento_Nombre as string,\n\t\tEstablecimiento_Propietario_Id as integer,\n\t\tEstablecimiento_PropietarioCodigo as string,\n\t\tEstablecimiento_Propietario_Nombre as string,\n\t\tEstablecimiento_Agrupacion_Id as integer,\n\t\tEstablecimiento_Agrupacion_Nombre as string,\n\t\tEstablecimiento_TipoID as integer,\n\t\tEstablecimiento_TipoNombre as string,\n\t\tEstablecimiento_Direccion as string,\n\t\tEstablecimiento_Poblacion as string,\n\t\tEstablecmiento_Provincia_Id as integer,\n\t\tEstablecimiento_Provincia_Nombre as string,\n\t\tEstablecimiento_ComunidadAutonoma_Nombre as string,\n\t\tEstablecimiento_ZonaGeografica_Nombre as string,\n\t\tEstablecimiento_CP as string,\n\t\tEstablecimiento_Longitud as decimal(38,12),\n\t\tEstablecimiento_Latitud as decimal(38,12),\n\t\tEstablecimiento_ConectadoSistemaLogistico as string,\n\t\tEstablecimiento_FechaAlta as date,\n\t\tEstablecimiento_FechaBaja as date,\n\t\tEstablecimiento_FechaActualizacion as date,\n\t\tEstablecimiento_FechaCarga as timestamp,\n\t\tEstablecimiento_UsuarioCarga as string,\n\t\tEstablecimiento_FicheroCarga as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tformat: 'table') ~> STGEstablecimientos"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_ASQL_FT_Establecimientos",
+								"type": "DatasetReference"
+							},
+							"name": "FTEstablecimientos",
+							"script": "STGEstablecimientos sink(input(\n\t\tEstablecimiento_Id as integer,\n\t\tEstablecimiento_Nombre as string,\n\t\tEstablecimiento_Propietario_Id as integer,\n\t\tEstablecimiento_PropietarioCodigo as string,\n\t\tEstablecimiento_Propietario_Nombre as string,\n\t\tEstablecimiento_Agrupacion_Id as integer,\n\t\tEstablecimiento_Agrupacion_Nombre as string,\n\t\tEstablecimiento_TipoID as integer,\n\t\tEstablecimiento_TipoNombre as string,\n\t\tEstablecimiento_Direccion as string,\n\t\tEstablecimiento_Poblacion as string,\n\t\tEstablecmiento_Provincia_Id as integer,\n\t\tEstablecimiento_Provincia_Nombre as string,\n\t\tEstablecimiento_ComunidadAutonoma_Nombre as string,\n\t\tEstablecimiento_ZonaGeografica_Nombre as string,\n\t\tEstablecimiento_CP as string,\n\t\tEstablecimiento_Longitud as decimal(38,12),\n\t\tEstablecimiento_Latitud as decimal(38,12),\n\t\tEstablecimiento_ConectadoSistemaLogistico as string,\n\t\tEstablecimiento_FechaAlta as date,\n\t\tEstablecimiento_FechaBaja as date,\n\t\tEstablecimiento_FechaActualizacion as date,\n\t\tEstablecimiento_FechaCarga as timestamp,\n\t\tEstablecimiento_UsuarioCarga as string,\n\t\tEstablecimiento_FicheroCarga as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\ttruncate:true) ~> FTEstablecimientos"
+						}
+					],
+					"transformations": []
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_ASQL_STG_Establecimientos')]",
+				"[concat(variables('factoryId'), '/datasets/DS_ASQL_FT_Establecimientos')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_STG_Establecimientos')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_CSV_EST",
+								"type": "DatasetReference"
+							},
+							"name": "CSVEstablecimientos",
+							"typeProperties": {},
+							"script": "source(output(\n\t\tEstablecimientoId as string,\n\t\tEstablecimientoNombre as string,\n\t\tPropiedatioId as string,\n\t\tPropietarioCodigo as string,\n\t\tPropietarioNombre as string,\n\t\tAgrupacionId as string,\n\t\tAgrupacionNombre as string,\n\t\tTipoId as string,\n\t\tTipoNombre as string,\n\t\tDireccion as string,\n\t\tPoblacion as string,\n\t\tProvinciaId as string,\n\t\tProvinciaNombre as string,\n\t\tComunidadAutonomaNombre as string,\n\t\tZonaGeograficaNombre as string,\n\t\tCP as string,\n\t\tLogitud as string,\n\t\tLatitud as string,\n\t\tConectadoSL as string,\n\t\tFechaAlta as string,\n\t\tFechaBaja as string,\n\t\tFechaActualizacion as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tpurgeFiles: true,\n\trowUrlColumn: 'Establecimiento_FicheroCarga',\n\twildcardPaths:['EST*.csv']) ~> CSVEstablecimientos"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_ASQL_STG_Establecimientos",
+								"type": "DatasetReference"
+							},
+							"name": "STGEstablecimientos",
+							"script": "FechaCarga sink(input(\n\t\tEstablecimiento_Id as integer,\n\t\tEstablecimiento_Nombre as string,\n\t\tEstablecimiento_Propietario_Id as integer,\n\t\tEstablecimiento_PropietarioCodigo as string,\n\t\tEstablecimiento_Propietario_Nombre as string,\n\t\tEstablecimiento_Agrupacion_Id as integer,\n\t\tEstablecimiento_Agrupacion_Nombre as string,\n\t\tEstablecimiento_TipoID as integer,\n\t\tEstablecimiento_TipoNombre as string,\n\t\tEstablecimiento_Direccion as string,\n\t\tEstablecimiento_Poblacion as string,\n\t\tEstablecmiento_Provincia_Id as integer,\n\t\tEstablecimiento_Provincia_Nombre as string,\n\t\tEstablecimiento_ComunidadAutonoma_Nombre as string,\n\t\tEstablecimiento_ZonaGeografica_Nombre as string,\n\t\tEstablecimiento_CP as string,\n\t\tEstablecimiento_Longitud as decimal(38,12),\n\t\tEstablecimiento_Latitud as decimal(38,12),\n\t\tEstablecimiento_ConectadoSistemaLogistico as string,\n\t\tEstablecimiento_FechaAlta as date,\n\t\tEstablecimiento_FechaBaja as date,\n\t\tEstablecimiento_FechaActualizacion as date,\n\t\tEstablecimiento_FechaCarga as timestamp,\n\t\tEstablecimiento_UsuarioCarga as string,\n\t\tEstablecimiento_FicheroCarga as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEstablecimiento_Id = EstablecimientoId,\n\t\tEstablecimiento_Nombre = EstablecimientoNombre,\n\t\tEstablecimiento_Propietario_Id = PropiedatioId,\n\t\tEstablecimiento_PropietarioCodigo = PropietarioCodigo,\n\t\tEstablecimiento_Propietario_Nombre = PropietarioNombre,\n\t\tEstablecimiento_Agrupacion_Id = AgrupacionId,\n\t\tEstablecimiento_Agrupacion_Nombre = AgrupacionNombre,\n\t\tEstablecimiento_TipoID = TipoId,\n\t\tEstablecimiento_TipoNombre = TipoNombre,\n\t\tEstablecimiento_Direccion = Direccion,\n\t\tEstablecimiento_Poblacion = Poblacion,\n\t\tEstablecmiento_Provincia_Id = ProvinciaId,\n\t\tEstablecimiento_Provincia_Nombre = ProvinciaNombre,\n\t\tEstablecimiento_ComunidadAutonoma_Nombre = ComunidadAutonomaNombre,\n\t\tEstablecimiento_ZonaGeografica_Nombre = ZonaGeograficaNombre,\n\t\tEstablecimiento_CP = CP,\n\t\tEstablecimiento_Longitud = Logitud,\n\t\tEstablecimiento_Latitud = Latitud,\n\t\tEstablecimiento_ConectadoSistemaLogistico = ConectadoSL,\n\t\tEstablecimiento_FechaAlta = FechaAlta,\n\t\tEstablecimiento_FechaBaja = FechaBaja,\n\t\tEstablecimiento_FechaActualizacion = FechaActualizacion,\n\t\tEstablecimiento_FechaCarga,\n\t\tEstablecimiento_FicheroCarga\n\t),\n\ttruncate:true) ~> STGEstablecimientos"
+						}
+					],
+					"transformations": [
+						{
+							"name": "FechaCarga",
+							"script": "CSVEstablecimientos derive(Establecimiento_FechaCarga = currentUTC()) ~> FechaCarga"
+						}
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_CSV_EST')]",
+				"[concat(variables('factoryId'), '/datasets/DS_ASQL_STG_Establecimientos')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_Establecimientos')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "IF_FILENAME_OK",
-						"type": "IfCondition",
+						"name": "CP_CopiaHistorico",
+						"type": "Copy",
 						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
 						"userProperties": [],
 						"typeProperties": {
-							"expression": {
-								"value": "@contains(pipeline().parameters.filePrefix, substring(pipeline().parameters.sourceFile,0,3))",
-								"type": "Expression"
+							"source": {
+								"type": "BlobSource",
+								"recursive": false
 							},
-							"ifTrueActivities": [
-								{
-									"name": "CP_IN_HIST",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "BlobSource",
-											"recursive": false
-										},
-										"sink": {
-											"type": "BlobSink"
-										},
-										"enableStaging": false,
-										"dataIntegrationUnits": 0
-									},
-									"inputs": [
-										{
-											"referenceName": "DS_BLOB_INPUT",
-											"type": "DatasetReference",
-											"parameters": {
-												"path": "input",
-												"filename": {
-													"value": "@pipeline().parameters.sourceFile",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "DS_BLOB_HISTORY",
-											"type": "DatasetReference",
-											"parameters": {
-												"DestinationFileName": {
-													"value": "@pipeline().parameters.sourceFile",
-													"type": "Expression"
-												}
-											}
-										}
-									]
-								},
-								{
-									"name": "DL_IN",
-									"type": "Delete",
-									"dependsOn": [
-										{
-											"activity": "CP_IN_STG",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"dataset": {
-											"referenceName": "DS_BLOB_INPUT",
-											"type": "DatasetReference",
-											"parameters": {
-												"path": "input",
-												"filename": {
-													"value": "@pipeline().parameters.sourceFile",
-													"type": "Expression"
-												}
-											}
-										},
-										"enableLogging": false
+							"sink": {
+								"type": "BlobSink"
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_BLOB_INPUT",
+								"type": "DatasetReference",
+								"parameters": {
+									"filename": {
+										"value": "@pipeline().parameters.nombreFichero",
+										"type": "Expression"
 									}
-								},
-								{
-									"name": "CP_IN_STG",
-									"type": "Copy",
-									"dependsOn": [
-										{
-											"activity": "CP_IN_HIST",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "BlobSource",
-											"recursive": false
-										},
-										"sink": {
-											"type": "BlobSink"
-										},
-										"enableStaging": false
-									},
-									"inputs": [
-										{
-											"referenceName": "DS_BLOB_INPUT",
-											"type": "DatasetReference",
-											"parameters": {
-												"path": "input",
-												"filename": {
-													"value": "@pipeline().parameters.sourceFile",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "DS_BLOB_STAGING",
-											"type": "DatasetReference",
-											"parameters": {
-												"DestinationFileName": {
-													"value": "@pipeline().parameters.sourceFile",
-													"type": "Expression"
-												}
-											}
-										}
-									]
 								}
-							]
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_BLOB_HISTORY",
+								"type": "DatasetReference",
+								"parameters": {
+									"DestinationFileName": {
+										"value": "@pipeline().parameters.nombreFichero",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "DF_STG_Establecimientos",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "CP_CopiaHistorico",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_STG_Establecimientos",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"CSVEstablecimientos": {
+										"nombreFichero": {
+											"value": "@pipeline().parameters.nombreFichero",
+											"type": "Expression"
+										}
+									},
+									"STGEstablecimientos": {}
+								}
+							},
+							"staging": {}
+						}
+					},
+					{
+						"name": "DF_FT_Establecimientos",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "DF_STG_Establecimientos",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_FT_Establecimientos",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"STGEstablecimientos": {},
+									"FTEstablecimientos": {}
+								}
+							},
+							"staging": {}
 						}
 					}
 				],
 				"parameters": {
-					"filePrefix": {
+					"nombreFichero": {
 						"type": "string"
 					},
-					"sourceFolder": {
-						"type": "string"
-					},
-					"sourceFile": {
+					"nombreDirectorio": {
 						"type": "string"
 					}
 				},
@@ -1515,7 +1120,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_BLOB_INPUT')]",
 				"[concat(variables('factoryId'), '/datasets/DS_BLOB_HISTORY')]",
-				"[concat(variables('factoryId'), '/datasets/DS_BLOB_STAGING')]"
+				"[concat(variables('factoryId'), '/dataflows/DF_STG_Establecimientos')]",
+				"[concat(variables('factoryId'), '/dataflows/DF_FT_Establecimientos')]"
 			]
 		}
 	]

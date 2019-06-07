@@ -29,23 +29,7 @@
 		},
 		"DS_BLOB_INPUT_properties_typeProperties_folderPath": {
 			"type": "string",
-			"defaultValue": "@{dataset().path}"
-		},
-		"DS_BLOB_INPUT_FOLDER_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": ""
-		},
-		"DS_BLOB_INPUT_FOLDER_properties_typeProperties_folderPath": {
-			"type": "string",
 			"defaultValue": "input"
-		},
-		"DS_BLOB_STAGING_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "@dataset().DestinationFileName"
-		},
-		"DS_BLOB_STAGING_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "staging"
 		},
 		"containerUri": {
 			"type": "string",
@@ -91,18 +75,6 @@
 					},
 					"DS_BLOB_INPUT_properties_typeProperties_folderPath": {
 						"value": "[parameters('DS_BLOB_INPUT_properties_typeProperties_folderPath')]"
-					},
-					"DS_BLOB_INPUT_FOLDER_properties_typeProperties_fileName": {
-						"value": "[parameters('DS_BLOB_INPUT_FOLDER_properties_typeProperties_fileName')]"
-					},
-					"DS_BLOB_INPUT_FOLDER_properties_typeProperties_folderPath": {
-						"value": "[parameters('DS_BLOB_INPUT_FOLDER_properties_typeProperties_folderPath')]"
-					},
-					"DS_BLOB_STAGING_properties_typeProperties_fileName": {
-						"value": "[parameters('DS_BLOB_STAGING_properties_typeProperties_fileName')]"
-					},
-					"DS_BLOB_STAGING_properties_typeProperties_folderPath": {
-						"value": "[parameters('DS_BLOB_STAGING_properties_typeProperties_folderPath')]"
 					}
 				}
 			},

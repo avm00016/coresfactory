@@ -21,19 +21,7 @@
 			"value": "@dataset().filename"
 		},
 		"DS_BLOB_INPUT_properties_typeProperties_folderPath": {
-			"value": "@{dataset().path}"
-		},
-		"DS_BLOB_INPUT_FOLDER_properties_typeProperties_fileName": {
-			"value": ""
-		},
-		"DS_BLOB_INPUT_FOLDER_properties_typeProperties_folderPath": {
 			"value": "input"
-		},
-		"DS_BLOB_STAGING_properties_typeProperties_fileName": {
-			"value": "@dataset().DestinationFileName"
-		},
-		"DS_BLOB_STAGING_properties_typeProperties_folderPath": {
-			"value": "staging"
 		}
 	}
 }
