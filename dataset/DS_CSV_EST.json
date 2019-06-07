@@ -1,5 +1,5 @@
 {
-	"name": "DS_CSV_INPUT",
+	"name": "DS_CSV_EST",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",

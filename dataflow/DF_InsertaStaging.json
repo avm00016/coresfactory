@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "DS_CSV_INPUT",
+						"referenceName": "DS_CSV_EST",
 						"type": "DatasetReference"
 					},
 					"name": "CSVEstablecimientos",
