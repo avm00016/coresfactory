@@ -36,7 +36,6 @@
 						"referenceName": "DS_BLOB_INPUT",
 						"type": "DatasetReference",
 						"parameters": {
-							"path": "input",
 							"filename": {
 								"value": "@pipeline().parameters.nombreFichero",
 								"type": "Expression"

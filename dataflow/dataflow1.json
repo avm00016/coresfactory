@@ -1,0 +1,34 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_CSV_EST",
+						"type": "DatasetReference"
+					},
+					"name": "CSVEstablecimientos",
+					"script": "source(output(\n\t\tEstablecimientoId as integer '##0',\n\t\tEstablecimientoNombre as string,\n\t\tPropiedatioId as integer '##0',\n\t\tPropietarioCodigo as string,\n\t\tPropietarioNombre as string,\n\t\tAgrupacionId as integer '##0',\n\t\tAgrupacionNombre as string,\n\t\tTipoId as integer '##0',\n\t\tTipoNombre as string,\n\t\tDireccion as string,\n\t\tPoblacion as string,\n\t\tProvinciaId as integer '##0',\n\t\tProvinciaNombre as string,\n\t\tComunidadAutonomaNombre as string,\n\t\tZonaGeograficaNombre as string,\n\t\tCP as string,\n\t\tLogitud as decimal(10,0),\n\t\tLatitud as decimal(10,0),\n\t\tConectadoSL as string,\n\t\tFechaAlta as date 'dd/MM/yyyy',\n\t\tFechaBaja as date 'dd/MM/yyyy',\n\t\tFechaActualizacion as date 'dd/MM/yyyy'\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tpurgeFiles: true,\n\trowUrlColumn: 'Establecimiento_FicheroCarga',\n\twildcardPaths:['EST*.csv']) ~> CSVEstablecimientos"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_ASQL_STG_Establecimientos",
+						"type": "DatasetReference"
+					},
+					"name": "STGEstablecimientos",
+					"script": "FechaCarga sink(input(\n\t\tEstablecimiento_Id as integer,\n\t\tEstablecimiento_Nombre as string,\n\t\tEstablecimiento_Propietario_Id as integer,\n\t\tEstablecimiento_PropietarioCodigo as string,\n\t\tEstablecimiento_Propietario_Nombre as string,\n\t\tEstablecimiento_Agrupacion_Id as integer,\n\t\tEstablecimiento_Agrupacion_Nombre as string,\n\t\tEstablecimiento_TipoID as integer,\n\t\tEstablecimiento_TipoNombre as string,\n\t\tEstablecimiento_Direccion as string,\n\t\tEstablecimiento_Poblacion as string,\n\t\tEstablecmiento_Provincia_Id as integer,\n\t\tEstablecimiento_Provincia_Nombre as string,\n\t\tEstablecimiento_ComunidadAutonoma_Nombre as string,\n\t\tEstablecimiento_ZonaGeografica_Nombre as string,\n\t\tEstablecimiento_CP as string,\n\t\tEstablecimiento_Longitud as decimal(38,12),\n\t\tEstablecimiento_Latitud as decimal(38,12),\n\t\tEstablecimiento_ConectadoSistemaLogistico as string,\n\t\tEstablecimiento_FechaAlta as date,\n\t\tEstablecimiento_FechaBaja as date,\n\t\tEstablecimiento_FechaActualizacion as date,\n\t\tEstablecimiento_FechaCarga as timestamp,\n\t\tEstablecimiento_UsuarioCarga as string,\n\t\tEstablecimiento_FicheroCarga as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\ttruncate:true) ~> STGEstablecimientos"
+				}
+			],
+			"transformations": [
+				{
+					"name": "FechaCarga",
+					"script": "CSVEstablecimientos derive(Establecimiento_FechaCarga = currentUTC()) ~> FechaCarga"
+				}
+			]
+		}
+	}
+}

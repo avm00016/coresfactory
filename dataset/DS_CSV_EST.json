@@ -23,6 +23,95 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "EstablecimientoId",
+				"type": "String"
+			},
+			{
+				"name": "EstablecimientoNombre",
+				"type": "String"
+			},
+			{
+				"name": "PropiedatioId",
+				"type": "String"
+			},
+			{
+				"name": "PropietarioCodigo",
+				"type": "String"
+			},
+			{
+				"name": "PropietarioNombre",
+				"type": "String"
+			},
+			{
+				"name": "AgrupacionId",
+				"type": "String"
+			},
+			{
+				"name": "AgrupacionNombre",
+				"type": "String"
+			},
+			{
+				"name": "TipoId",
+				"type": "String"
+			},
+			{
+				"name": "TipoNombre",
+				"type": "String"
+			},
+			{
+				"name": "Direccion",
+				"type": "String"
+			},
+			{
+				"name": "Poblacion",
+				"type": "String"
+			},
+			{
+				"name": "ProvinciaId",
+				"type": "String"
+			},
+			{
+				"name": "ProvinciaNombre",
+				"type": "String"
+			},
+			{
+				"name": "ComunidadAutonomaNombre",
+				"type": "String"
+			},
+			{
+				"name": "ZonaGeograficaNombre",
+				"type": "String"
+			},
+			{
+				"name": "CP",
+				"type": "String"
+			},
+			{
+				"name": "Logitud",
+				"type": "String"
+			},
+			{
+				"name": "Latitud",
+				"type": "String"
+			},
+			{
+				"name": "ConectadoSL",
+				"type": "String"
+			},
+			{
+				"name": "FechaAlta",
+				"type": "String"
+			},
+			{
+				"name": "FechaBaja",
+				"type": "String"
+			},
+			{
+				"name": "FechaActualizacion",
+				"type": "String"
+			}
+		]
 	}
 }

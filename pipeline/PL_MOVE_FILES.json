@@ -131,18 +131,6 @@
 										}
 									}
 								}
-							],
-							"outputs": [
-								{
-									"referenceName": "DS_BLOB_STAGING",
-									"type": "DatasetReference",
-									"parameters": {
-										"DestinationFileName": {
-											"value": "@pipeline().parameters.sourceFile",
-											"type": "Expression"
-										}
-									}
-								}
 							]
 						}
 					]

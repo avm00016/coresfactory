@@ -260,15 +260,6 @@
 						]
 					}
 				},
-				"inputs": [
-					{
-						"referenceName": "DS_CSV_STAGING",
-						"type": "DatasetReference",
-						"parameters": {
-							"fileName": "@pipeline().parameters.sourceFile"
-						}
-					}
-				],
 				"outputs": [
 					{
 						"referenceName": "DS_ASQL_STG_Establecimientos",
