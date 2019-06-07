@@ -16,10 +16,7 @@
 				"value": "@dataset().filename",
 				"type": "Expression"
 			},
-			"folderPath": {
-				"value": "@{dataset().path}",
-				"type": "Expression"
-			}
+			"folderPath": "input"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"

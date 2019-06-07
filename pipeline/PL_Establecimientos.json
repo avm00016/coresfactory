@@ -69,13 +69,29 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "DF_STG_Establecimientos",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"CSVEstablecimientos": {
+								"nombreFichero": {
+									"value": "@pipeline().parameters.nombreFichero",
+									"type": "Expression"
+								}
+							}
+						}
 					}
 				}
 			},
 			{
 				"name": "DF_FT_Establecimientos",
 				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "DF_STG_Establecimientos",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
