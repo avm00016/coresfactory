@@ -1,7 +1,7 @@
 {
 	"name": "TR_INPUT_FILES",
 	"properties": {
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
