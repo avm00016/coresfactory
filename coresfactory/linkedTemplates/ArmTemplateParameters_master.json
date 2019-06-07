@@ -1,0 +1,45 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "coresfactory"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"value": ""
+		},
+		"DS_BLOB_HISTORY_properties_typeProperties_fileName": {
+			"value": "@dataset().DestinationFileName"
+		},
+		"DS_BLOB_HISTORY_properties_typeProperties_folderPath": {
+			"value": "history"
+		},
+		"DS_BLOB_INPUT_properties_typeProperties_fileName": {
+			"value": "@dataset().filename"
+		},
+		"DS_BLOB_INPUT_properties_typeProperties_folderPath": {
+			"value": "@{dataset().path}"
+		},
+		"DS_BLOB_INPUT_FOLDER_properties_typeProperties_fileName": {
+			"value": ""
+		},
+		"DS_BLOB_INPUT_FOLDER_properties_typeProperties_folderPath": {
+			"value": "input"
+		},
+		"DS_BLOB_STAGING_properties_typeProperties_fileName": {
+			"value": "@dataset().DestinationFileName"
+		},
+		"DS_BLOB_STAGING_properties_typeProperties_folderPath": {
+			"value": "staging"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
