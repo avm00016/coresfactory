@@ -26,7 +26,11 @@
 			"transformations": [
 				{
 					"name": "FechaCarga",
-					"script": "CSVEstablecimientos derive(Establecimiento_FechaCarga = currentUTC()) ~> FechaCarga"
+					"script": "Filter1 derive(Establecimiento_FechaCarga = currentUTC()) ~> FechaCarga"
+				},
+				{
+					"name": "Filter1",
+					"script": "CSVEstablecimientos filter(not(isNull(EstablecimientoId))) ~> Filter1"
 				}
 			]
 		}
