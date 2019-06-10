@@ -5,11 +5,6 @@
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"nombreFichero": {
-				"type": "string"
-			}
-		},
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
