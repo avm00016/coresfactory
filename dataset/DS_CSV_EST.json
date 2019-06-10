@@ -13,6 +13,7 @@
 				"container": "input"
 			},
 			"columnDelimiter": ";",
+			"rowDelimiter": "\n",
 			"encodingName": "UTF-16",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
