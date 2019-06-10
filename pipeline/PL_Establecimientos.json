@@ -69,15 +69,7 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "DF_STG_Establecimientos",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"CSVEstablecimientos": {
-								"nombreFichero": {
-									"value": "@pipeline().parameters.nombreFichero",
-									"type": "Expression"
-								}
-							}
-						}
+						"type": "DataFlowReference"
 					}
 				}
 			},
