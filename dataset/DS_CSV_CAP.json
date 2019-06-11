@@ -12,7 +12,7 @@
 				"container": "input"
 			},
 			"columnDelimiter": "\t",
-			"encodingName": "UTF-8",
+			"encodingName": "UTF-16",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
