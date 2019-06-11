@@ -9,13 +9,14 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "CAP_20190611_130825.csv",
 				"container": "input"
 			},
 			"columnDelimiter": "\t",
 			"encodingName": "UTF-8",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
-			"quoteChar": "\""
+			"quoteChar": ""
 		},
 		"schema": [
 			{
