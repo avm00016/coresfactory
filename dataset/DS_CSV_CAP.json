@@ -1,0 +1,51 @@
+{
+	"name": "DS_CSV_CAP",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "CAP_20190611_130825.csv",
+				"container": "input"
+			},
+			"columnDelimiter": "\t",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "EstablecimientoId",
+				"type": "String"
+			},
+			{
+				"name": "EstablecimientoNombre",
+				"type": "String"
+			},
+			{
+				"name": "GrupoProductoId",
+				"type": "String"
+			},
+			{
+				"name": "GrupoProductoNombre",
+				"type": "String"
+			},
+			{
+				"name": "Capacidad",
+				"type": "String"
+			},
+			{
+				"name": "FechaInicio",
+				"type": "String"
+			},
+			{
+				"name": "FechaFin",
+				"type": "String"
+			}
+		]
+	}
+}

@@ -1,0 +1,18 @@
+{
+	"name": "DF_STG_Capacidades",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_CSV_CAP",
+						"type": "DatasetReference"
+					},
+					"name": "STGCapacidades",
+					"script": "source(output(\n\t\tEstablecimientoId as string,\n\t\tEstablecimientoNombre as string,\n\t\tGrupoProductoId as string,\n\t\tGrupoProductoNombre as string,\n\t\tCapacidad as string,\n\t\tFechaInicio as string,\n\t\tFechaFin as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\trowUrlColumn: 'FicheroCarga',\n\twildcardPaths:['CAP*']) ~> STGCapacidades"
+				}
+			]
+		}
+	}
+}
