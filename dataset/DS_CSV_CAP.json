@@ -9,7 +9,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "CAP_20190611_130825.csv",
 				"container": "input"
 			},
 			"columnDelimiter": "\t",
