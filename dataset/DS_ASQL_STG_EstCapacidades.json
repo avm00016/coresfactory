@@ -1,0 +1,56 @@
+{
+	"name": "DS_ASQL_STG_EstCapacidades",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Capacidad_Establecimiento_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Capacidad_Establecimiento_Nombre",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Capacidad_GrupoProducto_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Capacidad_GrupoProducto_Nombre",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Capacidad",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FechaInicio",
+				"type": "date"
+			},
+			{
+				"name": "FechaFin",
+				"type": "date"
+			},
+			{
+				"name": "FechaCarga",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "FicheroCarga",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[STG_EstCapacidades]"
+		}
+	}
+}
