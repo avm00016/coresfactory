@@ -10,7 +10,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "CSVEstCapacidades",
-					"script": "source(output(\n\t\t{﻿EstablecimientoId} as integer,\n\t\tEstablecimientoNombre as string,\n\t\tGrupoProductoId as integer,\n\t\tGrupoProductoNombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as date 'yyyyMMdd',\n\t\tFechaFin as date 'yyyyMMdd'\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'FicheroCarga') ~> CSVEstCapacidades"
+					"script": "source(output(\n\t\t{��䔀猀琀愀戀氀攀挀椀洀椀攀渀琀漀䤀搀ऀ䔀猀琀愀戀氀攀挀椀洀椀攀渀琀漀一漀洀戀爀攀ऀ䜀爀甀瀀漀倀爀漀搀甀挀琀漀䤀搀ऀ䜀爀甀瀀漀倀爀漀搀甀挀琀漀一漀洀戀爀攀ऀ䌀愀瀀愀挀椀搀愀搀ऀ䘀攀挀栀愀䤀渀椀挀椀漀ऀ䘀攀挀栀愀䘀椀渀} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'FicheroCarga') ~> CSVEstCapacidades"
 				}
 			],
 			"sinks": [
