@@ -1,0 +1,32 @@
+{
+	"name": "DS_ASQL_CTL_Errores",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "IdError",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MensajeError",
+				"type": "nvarchar"
+			},
+			{
+				"name": "NombreFichero",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[CTL_Errores]"
+		}
+	}
+}
