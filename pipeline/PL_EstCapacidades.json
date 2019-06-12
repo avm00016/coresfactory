@@ -4,7 +4,6 @@
 		"activities": [
 			{
 				"name": "DF_STG_EstCapacidades",
-				"description": "Carga Incremental de Capacidades de Establecimiento",
 				"type": "ExecuteDataFlow",
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -17,10 +16,6 @@
 					"dataflow": {
 						"referenceName": "DF_STG_EstCapacidades",
 						"type": "DataFlowReference"
-					},
-					"integrationRuntime": {
-						"referenceName": "integrationRuntime1",
-						"type": "IntegrationRuntimeReference"
 					}
 				}
 			}

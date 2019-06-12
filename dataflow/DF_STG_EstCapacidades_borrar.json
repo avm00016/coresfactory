@@ -1,5 +1,5 @@
 {
-	"name": "DF_STG_EstCapacidades",
+	"name": "DF_STG_EstCapacidades_borrar",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
