@@ -1,0 +1,58 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name",
+			"defaultValue": "coresfactory"
+		},
+		"TR_EstCapacidades_properties_PL_EstCapacidades_parameters_nombreFichero": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"TR_EstCapacidades_properties_PL_EstCapacidades_parameters_nombreDirectorio": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"TR_EstCapacidades_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/5a872d64-36b9-4adf-b9c4-e6ba85cf4457/resourceGroups/CORES_Training/providers/Microsoft.Storage/storageAccounts/coresca"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/TR_EstCapacidades')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_EstCapacidades",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"nombreFichero": "[parameters('TR_EstCapacidades_properties_PL_EstCapacidades_parameters_nombreFichero')]",
+							"nombreDirectorio": "[parameters('TR_EstCapacidades_properties_PL_EstCapacidades_parameters_nombreDirectorio')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/input/blobs/",
+					"scope": "[parameters('TR_EstCapacidades_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
