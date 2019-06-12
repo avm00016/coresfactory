@@ -1,0 +1,44 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name",
+			"defaultValue": "coresfactory"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/TR_EstCapacidades')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_EstCapacidades",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"nombreFichero": "@triggerBody().fileName",
+							"nombreDirectorio": "@triggerBody().folderPath"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/input/blobs/",
+					"scope": "/subscriptions/5a872d64-36b9-4adf-b9c4-e6ba85cf4457/resourceGroups/CORES_Training/providers/Microsoft.Storage/storageAccounts/coresca",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			}
+		}
+	]
+}
