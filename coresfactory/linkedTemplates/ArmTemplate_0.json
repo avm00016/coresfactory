@@ -1239,7 +1239,8 @@
 				],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"blobPathBeginsWith": "/input/blobs/CAP_",
+					"blobPathBeginsWith": "/input/blobs/",
+					"blobPathEndsWith": ".csv",
 					"scope": "[parameters('TR_EstCapacidades_properties_typeProperties_scope')]",
 					"events": [
 						"Microsoft.Storage.BlobCreated"
