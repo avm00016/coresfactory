@@ -10,7 +10,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "CSVEstCapacidades",
-					"script": "source(output(\n\t\tEstablecimientoId as integer,\n\t\tEstablecimientoNombre as string,\n\t\tGrupoProductoId as integer,\n\t\tGrupoProductoNombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as string,\n\t\tFechaFin as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmoveFiles: ['/input/blobs/','/history/'],\n\trowUrlColumn: 'FicheroCarga',\n\twildcardPaths:['/blobs/CAP_*']) ~> CSVEstCapacidades"
+					"script": "source(output(\n\t\tEstablecimientoId as integer,\n\t\tEstablecimientoNombre as string,\n\t\tGrupoProductoId as integer,\n\t\tGrupoProductoNombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as string,\n\t\tFechaFin as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmoveFiles: ['/input/blobs/','/history/'],\n\trowUrlColumn: 'FicheroCarga',\n\twildcardPaths:['/blobs/CAP_20190611_130826.csv']) ~> CSVEstCapacidades"
 				}
 			],
 			"sinks": [
