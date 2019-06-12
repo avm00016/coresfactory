@@ -17,6 +17,10 @@
 					"dataflow": {
 						"referenceName": "DF_STG_EstCapacidades",
 						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "integrationRuntime1",
+						"type": "IntegrationRuntimeReference"
 					}
 				}
 			}

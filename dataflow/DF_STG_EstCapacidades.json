@@ -10,7 +10,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "CSVEstCapacidades",
-					"script": "source(output(\n\t\tEstablecimientoId as integer,\n\t\tEstablecimientoNombre as string,\n\t\tGrupoProductoId as integer,\n\t\tGrupoProductoNombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as date,\n\t\tFechaFin as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpurgeFiles: true,\n\trowUrlColumn: 'FicheroCarga',\n\twildcardPaths:['/blobs/CAP_*']) ~> CSVEstCapacidades"
+					"script": "source(output(\n\t\tEstablecimientoId as integer,\n\t\tEstablecimientoNombre as string,\n\t\tGrupoProductoId as string,\n\t\tGrupoProductoNombre as string,\n\t\tCapacidad as string,\n\t\tFechaInicio as string,\n\t\tFechaFin as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpurgeFiles: true,\n\trowUrlColumn: 'FicheroCarga',\n\twildcardPaths:['/blobs/CAP_*']) ~> CSVEstCapacidades"
 				}
 			],
 			"sinks": [
@@ -20,13 +20,17 @@
 						"type": "DatasetReference"
 					},
 					"name": "STGEstCapacidades",
-					"script": "FechaCarga sink(input(\n\t\tCapacidad_Establecimiento_Id as integer,\n\t\tCapacidad_Establecimiento_Nombre as string,\n\t\tCapacidad_GrupoProducto_Id as integer,\n\t\tCapacidad_GrupoProducto_Nombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as date,\n\t\tFechaFin as date,\n\t\tFechaCarga as timestamp,\n\t\tFicheroCarga as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tCapacidad_Establecimiento_Id = EstablecimientoId,\n\t\tCapacidad_Establecimiento_Nombre = EstablecimientoNombre,\n\t\tCapacidad_GrupoProducto_Id = GrupoProductoId,\n\t\tCapacidad_GrupoProducto_Nombre = GrupoProductoNombre,\n\t\tCapacidad,\n\t\tFechaInicio,\n\t\tFechaFin,\n\t\tFechaCarga,\n\t\tFicheroCarga\n\t)) ~> STGEstCapacidades"
+					"script": "FechaCarga sink(input(\n\t\tEstablecimiento_Id as integer,\n\t\tEstablecimiento_Nombre as string,\n\t\tGrupoProducto_Id as integer,\n\t\tGrupoProducto_Nombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as date,\n\t\tFechaFin as date,\n\t\tFechaCarga as timestamp,\n\t\tFicheroCarga as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false) ~> STGEstCapacidades"
 				}
 			],
 			"transformations": [
 				{
 					"name": "FechaCarga",
 					"script": "CSVEstCapacidades derive(FechaCarga = currentUTC()) ~> FechaCarga"
+				},
+				{
+					"name": "Aggregate1",
+					"script": "CSVEstCapacidades aggregate(groupBy(EstablecimientoId),\n\tCONT = countDistinct(EstablecimientoId)) ~> Aggregate1"
 				}
 			]
 		}
