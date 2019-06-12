@@ -1239,7 +1239,7 @@
 				],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"blobPathBeginsWith": "/input/blobs/CAP_*",
+					"blobPathBeginsWith": "/input/blobs/CAP_",
 					"scope": "[parameters('TR_EstCapacidades_properties_typeProperties_scope')]",
 					"events": [
 						"Microsoft.Storage.BlobCreated"
