@@ -23,6 +23,15 @@
 		"DS_BLOB_INPUT_properties_typeProperties_folderPath": {
 			"value": "input"
 		},
+		"TR_EstCapacidades_properties_PL_EstCapacidades_parameters_nombreFichero": {
+			"value": "@triggerBody().fileName"
+		},
+		"TR_EstCapacidades_properties_PL_EstCapacidades_parameters_nombreDirectorio": {
+			"value": "@triggerBody().folderPath"
+		},
+		"TR_EstCapacidades_properties_typeProperties_scope": {
+			"value": "/subscriptions/5a872d64-36b9-4adf-b9c4-e6ba85cf4457/resourceGroups/CORES_Training/providers/Microsoft.Storage/storageAccounts/coresca"
+		},
 		"containerUri": {
 			"value": ""
 		},

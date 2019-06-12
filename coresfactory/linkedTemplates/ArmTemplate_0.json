@@ -30,6 +30,18 @@
 		"DS_BLOB_INPUT_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "input"
+		},
+		"TR_EstCapacidades_properties_PL_EstCapacidades_parameters_nombreFichero": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"TR_EstCapacidades_properties_PL_EstCapacidades_parameters_nombreDirectorio": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"TR_EstCapacidades_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/5a872d64-36b9-4adf-b9c4-e6ba85cf4457/resourceGroups/CORES_Training/providers/Microsoft.Storage/storageAccounts/coresca"
 		}
 	},
 	"variables": {
@@ -91,6 +103,64 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASQL_FT_Consumos')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Consumo_FechaReferencia",
+						"type": "date"
+					},
+					{
+						"name": "Consumo_Provincia_Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Consumo_Provincia_Nombre",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Consumo_GrupoProducto_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Consumo_GrupoProducto_Nombre",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Consumo_Cantidad",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Consumo_FechaCarga",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Consumo_FicheroCarga",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[FT_EstConsumos]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
 			]
 		},
 		{
@@ -219,6 +289,126 @@
 				],
 				"typeProperties": {
 					"tableName": "[[dbo].[FT_Establecimientos]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASQL_STG_Consumos')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Consumo_FechaReferencia",
+						"type": "date"
+					},
+					{
+						"name": "Consumo_Provincia_Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Consumo_Provincia_Nombre",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Consumo_GrupoProducto_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Consumo_GrupoProducto_Nombre",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Consumo_Cantidad",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Consumo_FechaCarga",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Consumo_FicheroCarga",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[STG_EstConsumos]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASQL_STG_EstCapacidades')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Capacidad_Establecimiento_Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Capacidad_Establecimiento_Nombre",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Capacidad_GrupoProducto_Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Capacidad_GrupoProducto_Nombre",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Capacidad",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "FechaInicio",
+						"type": "date"
+					},
+					{
+						"name": "FechaFin",
+						"type": "date"
+					},
+					{
+						"name": "FechaCarga",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "FicheroCarga",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[STG_EstCapacidades]"
 				}
 			},
 			"dependsOn": [
@@ -414,6 +604,141 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_CSV_CAP')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "CAP_20190611_130825.csv",
+						"container": "input"
+					},
+					"columnDelimiter": "\t",
+					"encodingName": "UTF-16",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "﻿EstablecimientoId",
+						"type": "String"
+					},
+					{
+						"name": "EstablecimientoNombre",
+						"type": "String"
+					},
+					{
+						"name": "GrupoProductoId",
+						"type": "String"
+					},
+					{
+						"name": "GrupoProductoNombre",
+						"type": "String"
+					},
+					{
+						"name": "Capacidad",
+						"type": "String"
+					},
+					{
+						"name": "FechaInicio",
+						"type": "String"
+					},
+					{
+						"name": "FechaFin",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_CSV_CAU')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "input"
+					},
+					"columnDelimiter": "\t",
+					"encodingName": "UTF-16",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "EstablecimientoId",
+						"type": "String"
+					},
+					{
+						"name": "EstablecimientoNombre",
+						"type": "String"
+					},
+					{
+						"name": "GrupoProductoId",
+						"type": "String"
+					},
+					{
+						"name": "GrupoProductoNombre",
+						"type": "String"
+					},
+					{
+						"name": "ViaId",
+						"type": "String"
+					},
+					{
+						"name": "ViaNombre",
+						"type": "String"
+					},
+					{
+						"name": "CanalSalidaMax",
+						"type": "String"
+					},
+					{
+						"name": "CanalSalidaMed",
+						"type": "String"
+					},
+					{
+						"name": "CanalEntradaMax",
+						"type": "String"
+					},
+					{
+						"name": "CanalEntradaMed",
+						"type": "String"
+					},
+					{
+						"name": "FechaInicio",
+						"type": "String"
+					},
+					{
+						"name": "FechaFin",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_CSV_EST')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -422,16 +747,12 @@
 					"referenceName": "AzureBlobStorage1",
 					"type": "LinkedServiceReference"
 				},
-				"parameters": {
-					"nombreFichero": {
-						"type": "string"
-					}
-				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": "EST_20190531_134410.csv",
 						"container": "input"
 					},
 					"columnDelimiter": ";",
@@ -536,377 +857,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PL_INSERT_STAGING')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "CP_LD_STG_EST",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "SetDate",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSetting",
-									"recursive": false,
-									"wildcardFileName": "EST*",
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSetting"
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"preCopyScript": {
-									"value": "delete from [dbo].[STG_Establecimientos]",
-									"type": "Expression"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "EstablecimientoId",
-											"type": "Int64"
-										},
-										"sink": {
-											"name": "Establecimiento_Id",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "EstablecimientoNombre",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Establecimiento_Nombre",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "PropiedatioId",
-											"type": "Int64"
-										},
-										"sink": {
-											"name": "Establecimiento_Propietario_Id",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "PropietarioNombre",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Establecimiento_Propietario_Nombre",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "AgrupacionId",
-											"type": "Int64"
-										},
-										"sink": {
-											"name": "Establecimiento_Agrupacion_Id",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "AgrupacionNombre",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Establecimiento_Agrupacion_Nombre",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "TipoId",
-											"type": "Int64"
-										},
-										"sink": {
-											"name": "Establecimiento_TipoID",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "TipoNombre",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Establecimiento_TipoNombre",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Direccion",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Establecimiento_Direccion",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Poblacion",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Establecimiento_Poblacion",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ProvinciaId",
-											"type": "Int64"
-										},
-										"sink": {
-											"name": "Establecmiento_Provincia_Id",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "ProvinciaNombre",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Establecimiento_Provincia_Nombre",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ComunidadAutonomaNombre",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Establecimiento_ComunidadAutonoma_Nombre",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ZonaGeograficaNombre",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Establecimiento_ZonaGeografica_Nombre",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "CP",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Establecimiento_CP",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Logitud",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "Establecimiento_Longitud",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"name": "Latitud",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "Establecimiento_Latitud",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"name": "ConectadoSL",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Establecimiento_ConectadoSistemaLogistico",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "FechaAlta",
-											"type": "DateTime",
-											"format": "dd/MM/yyyy"
-										},
-										"sink": {
-											"name": "Establecimiento_FechaAlta",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "FechaBaja",
-											"type": "DateTime",
-											"format": "dd/MM/yyyy"
-										},
-										"sink": {
-											"name": "Establecimiento_FechaBaja",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "FechaActualizacion",
-											"type": "DateTime",
-											"format": "dd/MM/yyyy"
-										},
-										"sink": {
-											"name": "Establecimiento_FechaActualizacion",
-											"type": "DateTime"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_CSV_EST",
-								"type": "DatasetReference",
-								"parameters": {
-									"nombreFichero": {
-										"value": "@pipeline().parameters.sourceFile",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_ASQL_STG_Establecimientos",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "SP_UP_STG_EST",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "CP_LD_STG_EST",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[Update_Campos_Carga]",
-							"storedProcedureParameters": {
-								"nombreFichero": {
-									"value": {
-										"value": "@pipeline().parameters.sourceFile",
-										"type": "Expression"
-									},
-									"type": "String"
-								},
-								"nombreTabla": {
-									"value": "STG_Establecimientos",
-									"type": "String"
-								},
-								"nombreUsuario": {
-									"value": "USUARIO",
-									"type": "String"
-								},
-								"fechaCarga": {
-									"value": {
-										"value": "@variables('currentDate')",
-										"type": "Expression"
-									},
-									"type": "Datetime"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDatabase1",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "SetDate",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "currentDate",
-							"value": {
-								"value": "@utcnow()",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"parameters": {
-					"sourceFolder": {
-						"type": "string"
-					},
-					"sourceFile": {
-						"type": "string"
-					}
-				},
-				"variables": {
-					"currentDate": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_CSV_EST')]",
-				"[concat(variables('factoryId'), '/datasets/DS_ASQL_STG_Establecimientos')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/DF_FT_Establecimientos')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -943,6 +893,47 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DF_STG_EstCapacidades')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_CSV_CAP",
+								"type": "DatasetReference"
+							},
+							"name": "CSVEstCapacidades",
+							"typeProperties": {},
+							"script": "source(output(\n\t\tEstablecimientoId as integer,\n\t\tEstablecimientoNombre as string,\n\t\tGrupoProductoId as integer,\n\t\tGrupoProductoNombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as date 'yyyyMMdd',\n\t\tFechaFin as date 'yyyyMMdd'\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmoveFiles: ['./input/','../historico/'],\n\trowUrlColumn: 'FicheroCarga',\n\twildcardPaths:['CAP_*']) ~> CSVEstCapacidades"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_ASQL_STG_EstCapacidades",
+								"type": "DatasetReference"
+							},
+							"name": "STGEstCapacidades",
+							"script": "FechaCarga sink(input(\n\t\tCapacidad_Establecimiento_Id as integer,\n\t\tCapacidad_Establecimiento_Nombre as string,\n\t\tCapacidad_GrupoProducto_Id as integer,\n\t\tCapacidad_GrupoProducto_Nombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as date,\n\t\tFechaFin as date,\n\t\tFechaCarga as timestamp,\n\t\tFicheroCarga as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tCapacidad_Establecimiento_Id = EstablecimientoId,\n\t\tCapacidad_Establecimiento_Nombre = EstablecimientoNombre,\n\t\tCapacidad_GrupoProducto_Id = GrupoProductoId,\n\t\tCapacidad_GrupoProducto_Nombre = GrupoProductoNombre,\n\t\tCapacidad,\n\t\tFechaInicio,\n\t\tFechaFin,\n\t\tFechaCarga,\n\t\tFicheroCarga\n\t)) ~> STGEstCapacidades"
+						}
+					],
+					"transformations": [
+						{
+							"name": "FechaCarga",
+							"script": "CSVEstCapacidades derive(FechaCarga = currentUTC()) ~> FechaCarga"
+						}
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_CSV_CAP')]",
+				"[concat(variables('factoryId'), '/datasets/DS_ASQL_STG_EstCapacidades')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DF_STG_Establecimientos')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -957,7 +948,7 @@
 							},
 							"name": "CSVEstablecimientos",
 							"typeProperties": {},
-							"script": "source(output(\n\t\tEstablecimientoId as string,\n\t\tEstablecimientoNombre as string,\n\t\tPropiedatioId as string,\n\t\tPropietarioCodigo as string,\n\t\tPropietarioNombre as string,\n\t\tAgrupacionId as string,\n\t\tAgrupacionNombre as string,\n\t\tTipoId as string,\n\t\tTipoNombre as string,\n\t\tDireccion as string,\n\t\tPoblacion as string,\n\t\tProvinciaId as string,\n\t\tProvinciaNombre as string,\n\t\tComunidadAutonomaNombre as string,\n\t\tZonaGeograficaNombre as string,\n\t\tCP as string,\n\t\tLogitud as string,\n\t\tLatitud as string,\n\t\tConectadoSL as string,\n\t\tFechaAlta as string,\n\t\tFechaBaja as string,\n\t\tFechaActualizacion as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tpurgeFiles: true,\n\trowUrlColumn: 'Establecimiento_FicheroCarga',\n\twildcardPaths:['EST*.csv']) ~> CSVEstablecimientos"
+							"script": "source(output(\n\t\tEstablecimientoId as integer,\n\t\tEstablecimientoNombre as string,\n\t\tPropiedatioId as integer,\n\t\tPropietarioCodigo as string,\n\t\tPropietarioNombre as string,\n\t\tAgrupacionId as integer,\n\t\tAgrupacionNombre as string,\n\t\tTipoId as integer,\n\t\tTipoNombre as string,\n\t\tDireccion as string,\n\t\tPoblacion as string,\n\t\tProvinciaId as integer,\n\t\tProvinciaNombre as string,\n\t\tComunidadAutonomaNombre as string,\n\t\tZonaGeograficaNombre as string,\n\t\tCP as string,\n\t\tLogitud as float,\n\t\tLatitud as float,\n\t\tConectadoSL as string,\n\t\tFechaAlta as date,\n\t\tFechaBaja as date,\n\t\tFechaActualizacion as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\trowUrlColumn: 'Establecimiento_FicheroCarga') ~> CSVEstablecimientos"
 						}
 					],
 					"sinks": [
@@ -973,7 +964,11 @@
 					"transformations": [
 						{
 							"name": "FechaCarga",
-							"script": "CSVEstablecimientos derive(Establecimiento_FechaCarga = currentUTC()) ~> FechaCarga"
+							"script": "Filter1 derive(Establecimiento_FechaCarga = currentUTC()) ~> FechaCarga"
+						},
+						{
+							"name": "Filter1",
+							"script": "CSVEstablecimientos filter(not(isNull(EstablecimientoId))) ~> Filter1"
 						}
 					]
 				}
@@ -981,6 +976,53 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_CSV_EST')]",
 				"[concat(variables('factoryId'), '/datasets/DS_ASQL_STG_Establecimientos')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_EstCapacidades')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "DF_STG_EstCapacidades",
+						"description": "Carga Incremental de Capacidades de Establecimiento",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_STG_EstCapacidades",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"CSVEstCapacidades": {},
+									"STGEstCapacidades": {}
+								}
+							},
+							"staging": {}
+						}
+					}
+				],
+				"parameters": {
+					"nombreFichero": {
+						"type": "string"
+					},
+					"nombreDirectorio": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/DF_STG_EstCapacidades')]"
 			]
 		},
 		{
@@ -1062,12 +1104,7 @@
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
-									"CSVEstablecimientos": {
-										"nombreFichero": {
-											"value": "@pipeline().parameters.nombreFichero",
-											"type": "Expression"
-										}
-									},
+									"CSVEstablecimientos": {},
 									"STGEstablecimientos": {}
 								}
 							},
@@ -1122,6 +1159,39 @@
 				"[concat(variables('factoryId'), '/datasets/DS_BLOB_HISTORY')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_STG_Establecimientos')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_FT_Establecimientos')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TR_EstCapacidades')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_EstCapacidades",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"nombreFichero": "[parameters('TR_EstCapacidades_properties_PL_EstCapacidades_parameters_nombreFichero')]",
+							"nombreDirectorio": "[parameters('TR_EstCapacidades_properties_PL_EstCapacidades_parameters_nombreDirectorio')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/input/",
+					"blobPathEndsWith": "CAP_*",
+					"scope": "[parameters('TR_EstCapacidades_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_EstCapacidades')]"
 			]
 		}
 	]
