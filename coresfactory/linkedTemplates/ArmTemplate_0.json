@@ -988,14 +988,7 @@
 						"name": "DF_STG_EstCapacidades",
 						"description": "Carga Incremental de Capacidades de Establecimiento",
 						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "Copy1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -1016,54 +1009,6 @@
 							},
 							"staging": {}
 						}
-					},
-					{
-						"name": "Copy1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BlobSource",
-								"recursive": false
-							},
-							"sink": {
-								"type": "BlobSink"
-							},
-							"enableStaging": false,
-							"dataIntegrationUnits": 0
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_BLOB_INPUT",
-								"type": "DatasetReference",
-								"parameters": {
-									"filename": {
-										"value": "@pipeline().parameters.nombreFichero",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_BLOB_HISTORY",
-								"type": "DatasetReference",
-								"parameters": {
-									"DestinationFileName": {
-										"value": "@pipeline().parameters.nombreFichero",
-										"type": "Expression"
-									}
-								}
-							}
-						]
 					}
 				],
 				"parameters": {
@@ -1077,9 +1022,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/DF_STG_EstCapacidades')]",
-				"[concat(variables('factoryId'), '/datasets/DS_BLOB_INPUT')]",
-				"[concat(variables('factoryId'), '/datasets/DS_BLOB_HISTORY')]"
+				"[concat(variables('factoryId'), '/dataflows/DF_STG_EstCapacidades')]"
 			]
 		},
 		{
@@ -1239,7 +1182,7 @@
 				],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"blobPathBeginsWith": "/input/blobs/",
+					"blobPathBeginsWith": "/input/blobs/CAP_",
 					"blobPathEndsWith": ".csv",
 					"scope": "[parameters('TR_EstCapacidades_properties_typeProperties_scope')]",
 					"events": [
