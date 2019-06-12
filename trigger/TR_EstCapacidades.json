@@ -16,8 +16,7 @@
 		],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
-			"blobPathBeginsWith": "/input/",
-			"blobPathEndsWith": "CAP_*",
+			"blobPathBeginsWith": "/input/blobs/CAP_*",
 			"scope": "/subscriptions/5a872d64-36b9-4adf-b9c4-e6ba85cf4457/resourceGroups/CORES_Training/providers/Microsoft.Storage/storageAccounts/coresca",
 			"events": [
 				"Microsoft.Storage.BlobCreated"
