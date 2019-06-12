@@ -6,6 +6,14 @@
 				"name": "DF_STG_EstCapacidades",
 				"description": "Carga Incremental de Capacidades de Establecimiento",
 				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -19,6 +27,52 @@
 						"type": "DataFlowReference"
 					}
 				}
+			},
+			{
+				"name": "Copy1",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "BlobSource",
+						"recursive": false
+					},
+					"sink": {
+						"type": "BlobSink"
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_BLOB_INPUT",
+						"type": "DatasetReference",
+						"parameters": {
+							"filename": {
+								"value": "@pipeline().parameters.nombreFichero",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_BLOB_HISTORY",
+						"type": "DatasetReference",
+						"parameters": {
+							"DestinationFileName": {
+								"value": "@pipeline().parameters.nombreFichero",
+								"type": "Expression"
+							}
+						}
+					}
+				]
 			}
 		],
 		"parameters": {
