@@ -1090,7 +1090,7 @@
 							},
 							"name": "CSVEstCapacidades",
 							"typeProperties": {},
-							"script": "source(output(\n\t\tEstablecimientoId as integer,\n\t\tEstablecimientoNombre as string,\n\t\tGrupoProductoId as integer,\n\t\tGrupoProductoNombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as date 'yyyyMMdd',\n\t\tFechaFin as date 'yyyyMMdd'\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmoveFiles: ['./input/','../historico/'],\n\trowUrlColumn: 'FicheroCarga',\n\twildcardPaths:['CAP_*']) ~> CSVEstCapacidades"
+							"script": "source(output(\n\t\tEstablecimientoId as integer,\n\t\tEstablecimientoNombre as string,\n\t\tGrupoProductoId as integer,\n\t\tGrupoProductoNombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as date,\n\t\tFechaFin as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpurgeFiles: true,\n\trowUrlColumn: 'FicheroCarga',\n\twildcardPaths:['CAP_*']) ~> CSVEstCapacidades"
 						}
 					],
 					"sinks": [

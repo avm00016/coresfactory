@@ -1,0 +1,52 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name",
+			"defaultValue": "coresfactory"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_STG_EstCapacidades')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_CSV_CAP",
+								"type": "DatasetReference"
+							},
+							"name": "CSVEstCapacidades",
+							"script": "source(output(\n\t\tEstablecimientoId as integer,\n\t\tEstablecimientoNombre as string,\n\t\tGrupoProductoId as integer,\n\t\tGrupoProductoNombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as date,\n\t\tFechaFin as date\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpurgeFiles: true,\n\trowUrlColumn: 'FicheroCarga',\n\twildcardPaths:['CAP_*']) ~> CSVEstCapacidades"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_ASQL_STG_EstCapacidades",
+								"type": "DatasetReference"
+							},
+							"name": "STGEstCapacidades",
+							"script": "FechaCarga sink(input(\n\t\tCapacidad_Establecimiento_Id as integer,\n\t\tCapacidad_Establecimiento_Nombre as string,\n\t\tCapacidad_GrupoProducto_Id as integer,\n\t\tCapacidad_GrupoProducto_Nombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as date,\n\t\tFechaFin as date,\n\t\tFechaCarga as timestamp,\n\t\tFicheroCarga as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tCapacidad_Establecimiento_Id = EstablecimientoId,\n\t\tCapacidad_Establecimiento_Nombre = EstablecimientoNombre,\n\t\tCapacidad_GrupoProducto_Id = GrupoProductoId,\n\t\tCapacidad_GrupoProducto_Nombre = GrupoProductoNombre,\n\t\tCapacidad,\n\t\tFechaInicio,\n\t\tFechaFin,\n\t\tFechaCarga,\n\t\tFicheroCarga\n\t)) ~> STGEstCapacidades"
+						}
+					],
+					"transformations": [
+						{
+							"name": "FechaCarga",
+							"script": "CSVEstCapacidades derive(FechaCarga = currentUTC()) ~> FechaCarga"
+						}
+					]
+				}
+			}
+		}
+	]
+}
