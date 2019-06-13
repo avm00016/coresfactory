@@ -1,6 +1,28 @@
 {
 	"name": "DF_FT_EstCapacidades",
 	"properties": {
-		"type": "MappingDataFlow"
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_ASQL_STG_EstCapacidades",
+						"type": "DatasetReference"
+					},
+					"name": "STGEstCapacidades",
+					"script": "source(output(\n\t\tEstablecimiento_Id as integer,\n\t\tEstablecimiento_Nombre as string,\n\t\tGrupoProducto_Id as integer,\n\t\tGrupoProducto_Nombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as date,\n\t\tFechaFin as date,\n\t\tFechaCarga as timestamp,\n\t\tFicheroCarga as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'table') ~> STGEstCapacidades"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_ASQL_FT_EstCapacidades",
+						"type": "DatasetReference"
+					},
+					"name": "FTEstCapacidades",
+					"script": "STGEstCapacidades sink(input(\n\t\tEstablecimiento_Id as integer,\n\t\tEstablecimiento_Nombre as string,\n\t\tGrupoProducto_Id as integer,\n\t\tGrupoProducto_Nombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as date,\n\t\tFechaFin as date,\n\t\tFechaCarga as timestamp,\n\t\tFicheroCarga as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false) ~> FTEstCapacidades"
+				}
+			]
+		}
 	}
 }

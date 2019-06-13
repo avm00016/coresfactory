@@ -1,0 +1,56 @@
+{
+	"name": "DS_ASQL_FT_EstCapacidades",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Establecimiento_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Establecimiento_Nombre",
+				"type": "nvarchar"
+			},
+			{
+				"name": "GrupoProducto_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "GrupoProducto_Nombre",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Capacidad",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FechaInicio",
+				"type": "date"
+			},
+			{
+				"name": "FechaFin",
+				"type": "date"
+			},
+			{
+				"name": "FechaCarga",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "FicheroCarga",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[FT_EstCapacidades]"
+		}
+	}
+}
