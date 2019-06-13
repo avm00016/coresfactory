@@ -18,14 +18,42 @@
 						"type": "DataFlowReference"
 					}
 				}
+			},
+			{
+				"name": "MensajeError",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "DF_STG_EstCapacidades",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"typeProperties": {
+					"variableName": "ErrorMessage",
+					"value": {
+						"value": "@activity('DF_STG_EstCapacidades').Error.Message",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"concurrency": 1,
 		"parameters": {
 			"nombreFichero": {
 				"type": "string"
 			},
 			"nombreDirectorio": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"ErrorMessage": {
+				"type": "String"
+			},
+			"ErrorCode": {
+				"type": "String"
 			}
 		}
 	}
