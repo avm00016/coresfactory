@@ -53,7 +53,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "select '/blobs/' + ficheroCarga from dbo.CTL_Ejecuciones where IdEjecucion_Pipeline = '@{pipeline().RunId}'",
+							"value": "select '/blobs/' + ficheroCarga as fichero from dbo.CTL_Ejecuciones where IdEjecucion_Pipeline = '@{pipeline().RunId}'",
 							"type": "Expression"
 						}
 					},
@@ -74,8 +74,9 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "ficheroCarga",
-									"type": "String"
+									"name": "fichero",
+									"type": "String",
+									"ordinal": 1
 								},
 								"sink": {
 									"type": "String",
