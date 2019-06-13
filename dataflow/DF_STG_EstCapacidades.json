@@ -20,7 +20,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "STGEstCapacidades",
-					"script": "FechaCarga sink(input(\n\t\tEstablecimiento_Id as integer,\n\t\tEstablecimiento_Nombre as string,\n\t\tGrupoProducto_Id as integer,\n\t\tGrupoProducto_Nombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as date,\n\t\tFechaFin as date,\n\t\tFechaCarga as timestamp,\n\t\tFicheroCarga as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEstablecimiento_Id = EstablecimientoId,\n\t\tEstablecimiento_Nombre = EstablecimientoNombre,\n\t\tGrupoProducto_Id = GrupoProductoId,\n\t\tGrupoProducto_Nombre = GrupoProductoNombre,\n\t\tCapacidad,\n\t\tFechaInicio,\n\t\tFechaFin,\n\t\tFechaCarga,\n\t\tFicheroCarga\n\t)) ~> STGEstCapacidades"
+					"script": "FechaCarga sink(input(\n\t\tEstablecimiento_Id as integer,\n\t\tEstablecimiento_Nombre as string,\n\t\tGrupoProducto_Id as integer,\n\t\tGrupoProducto_Nombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as date,\n\t\tFechaFin as date,\n\t\tFechaCarga as timestamp,\n\t\tFicheroCarga as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true,\n\tformat: 'table',\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tmapColumn(\n\t\tEstablecimiento_Id = EstablecimientoId,\n\t\tEstablecimiento_Nombre = EstablecimientoNombre,\n\t\tGrupoProducto_Id = GrupoProductoId,\n\t\tGrupoProducto_Nombre = GrupoProductoNombre,\n\t\tCapacidad,\n\t\tFechaInicio,\n\t\tFechaFin,\n\t\tFechaCarga,\n\t\tFicheroCarga\n\t),\n\ttruncate:true) ~> STGEstCapacidades"
 				}
 			],
 			"transformations": [
