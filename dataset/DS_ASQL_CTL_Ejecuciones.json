@@ -1,0 +1,64 @@
+{
+	"name": "DS_ASQL_CTL_Ejecuciones",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "IdEjecucion",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Nombre_DataFactory",
+				"type": "nvarchar"
+			},
+			{
+				"name": "IdEjecucion_Trigger",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Nombre_Trigger",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tipo_Trigger",
+				"type": "nvarchar"
+			},
+			{
+				"name": "IdEjecucion_Pipeline",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Nombre_Pipeline",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FicheroCarga",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FechaInicio",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "FechaFin",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Estado",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[CTL_Ejecuciones]"
+		}
+	}
+}
