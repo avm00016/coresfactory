@@ -10,7 +10,7 @@
 						"type": "DatasetReference"
 					},
 					"name": "CSVEstCapacidades",
-					"script": "source(output(\n\t\tEstablecimientoId as integer,\n\t\tEstablecimientoNombre as string,\n\t\tGrupoProductoId as integer,\n\t\tGrupoProductoNombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as string,\n\t\tFechaFin as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tmoveFiles: ['/blobs/','../history/'],\n\tfileList: true,\n\trowUrlColumn: 'FicheroCarga',\n\twildcardPaths:['/control/CAP_Fichero_Procesado.txt']) ~> CSVEstCapacidades"
+					"script": "source(output(\n\t\tEstablecimientoId as integer,\n\t\tEstablecimientoNombre as string,\n\t\tGrupoProductoId as integer,\n\t\tGrupoProductoNombre as string,\n\t\tCapacidad as integer,\n\t\tFechaInicio as string,\n\t\tFechaFin as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tfileList: true,\n\trowUrlColumn: 'FicheroCarga',\n\twildcardPaths:['/control/CAP_Fichero_Procesado.txt']) ~> CSVEstCapacidades"
 				}
 			],
 			"sinks": [

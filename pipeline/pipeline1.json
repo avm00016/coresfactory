@@ -5,6 +5,14 @@
 			{
 				"name": "DF_STG_EstCapacidades",
 				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "CD_CAP_Control_Fichero",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -17,8 +25,163 @@
 						"referenceName": "DF_STG_EstCapacidades",
 						"type": "DataFlowReference"
 					}
+				},
+				"parameters": {
+					"name": "fileName",
+					"type": "String"
+				}
+			},
+			{
+				"name": "CD_CAP_Control_Fichero",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "SP_Insert_CTL_Ejecuciones",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "select ficheroCarga from dbo.CTL_Ejecuciones where IdEjecucion_Pipeline = '@{pipeline().RunId}'",
+							"type": "Expression"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSetting"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSetting",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "ficheroCarga",
+									"type": "String"
+								},
+								"sink": {
+									"type": "String",
+									"ordinal": 1
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_ASQL_CTL_Ejecuciones",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_CSV_CAP_Control",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "SP_Insert_CTL_Ejecuciones",
+				"type": "SqlServerStoredProcedure",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[Insert_CTL_Ejecuciones]",
+					"storedProcedureParameters": {
+						"FechaInicio": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"FicheroCarga": {
+							"value": {
+								"value": "@pipeline().parameters.nombreFichero",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"IdEjecucion_Pipeline": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"IdEjecucion_Trigger": {
+							"value": {
+								"value": "@pipeline().TriggerId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"Nombre_DataFactory": {
+							"value": {
+								"value": "@pipeline().DataFactory",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"Nombre_Pipeline": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"Nombre_Trigger": {
+							"value": {
+								"value": "@pipeline().TriggerName",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"Tipo_Trigger": {
+							"value": {
+								"value": "@pipeline().TriggerType",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
 				}
 			}
-		]
+		],
+		"parameters": {
+			"nombreFichero": {
+				"type": "string"
+			},
+			"nombreDirectorio": {
+				"type": "string"
+			}
+		}
 	}
 }

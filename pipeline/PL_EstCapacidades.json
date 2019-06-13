@@ -5,14 +5,6 @@
 			{
 				"name": "DF_STG_EstCapacidades",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "Custom1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -44,21 +36,6 @@
 						"value": "@activity('DF_STG_EstCapacidades').Error.Message",
 						"type": "Expression"
 					}
-				}
-			},
-			{
-				"name": "Custom1",
-				"description": "Escribe el archivo a procesar",
-				"type": "Custom",
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"typeProperties": {
-					"command": ""
 				}
 			},
 			{
@@ -237,6 +214,17 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "SP_Insert_CTL_Ejecuciones",
+				"type": "SqlServerStoredProcedure",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				}
 			}
 		],
 		"concurrency": 1,
