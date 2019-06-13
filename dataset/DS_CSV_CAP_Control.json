@@ -14,7 +14,7 @@
 				"container": "input"
 			},
 			"columnDelimiter": ",",
-			"encodingName": "UTF-16",
+			"encodingName": "UTF-8",
 			"escapeChar": "\\",
 			"quoteChar": ""
 		},
