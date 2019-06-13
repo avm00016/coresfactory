@@ -1,0 +1,6 @@
+{
+	"name": "DF_FT_EstCapacidades",
+	"properties": {
+		"type": "MappingDataFlow"
+	}
+}
