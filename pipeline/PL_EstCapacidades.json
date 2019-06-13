@@ -64,7 +64,7 @@
 				}
 			},
 			{
-				"name": "SP_CTL_Log_Errores",
+				"name": "SP_CTL_Errores",
 				"description": "Inserta una fila rellenando varios campos",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
@@ -89,7 +89,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "SP_CTL_Log_Errores",
+						"activity": "SP_CTL_Errores",
 						"dependencyConditions": [
 							"Succeeded"
 						]

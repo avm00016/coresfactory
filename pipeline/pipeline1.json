@@ -36,7 +36,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "SP_Insert_CTL_Ejecuciones",
+						"activity": "CD_CopiaHistorico",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -173,6 +173,261 @@
 					"referenceName": "AzureSqlDatabase1",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "DF_FT_Establecimientos",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "DF_STG_EstCapacidades",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_FT_Establecimientos",
+						"type": "DataFlowReference"
+					}
+				}
+			},
+			{
+				"name": "CD_CopiaHistorico",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "SP_Insert_CTL_Ejecuciones",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "BlobSource",
+						"recursive": false
+					},
+					"sink": {
+						"type": "BlobSink"
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_BLOB_INPUT",
+						"type": "DatasetReference",
+						"parameters": {
+							"filename": {
+								"value": "@concat(pipeline().parameters.nombreDirectorio, pipeline().parameters.nombreFichero)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_BLOB_HISTORY",
+						"type": "DatasetReference",
+						"parameters": {
+							"DestinationFileName": {
+								"value": "@pipeline().parameters.nombreFichero",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "MensajeError",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "DF_STG_EstCapacidades",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"typeProperties": {
+					"variableName": "MensajeError",
+					"value": {
+						"value": "@activity('DF_STG_EstCapacidades').Error.Message",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SP_CTL_Errores",
+				"description": "Inserta una fila rellenando varios campos",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "MensajeError",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				}
+			},
+			{
+				"name": "DF_CTL_Errores¿?¿??",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "SP_CTL_Errores",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_CTL_Errores",
+						"type": "DataFlowReference"
+					}
+				}
+			},
+			{
+				"name": "SP_Update_CTL_Ejecuciones",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "DF_FT_Establecimientos",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[Insert_CTL_Ejecuciones]",
+					"storedProcedureParameters": {
+						"FechaInicio": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"FicheroCarga": {
+							"value": {
+								"value": "@pipeline().parameters.nombreFichero",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"IdEjecucion_Pipeline": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"IdEjecucion_Trigger": {
+							"value": {
+								"value": "@pipeline().TriggerId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"Nombre_DataFactory": {
+							"value": {
+								"value": "@pipeline().DataFactory",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"Nombre_Pipeline": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"Nombre_Trigger": {
+							"value": {
+								"value": "@pipeline().TriggerName",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"Tipo_Trigger": {
+							"value": {
+								"value": "@pipeline().TriggerType",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "DL_BorraInput",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "SP_Update_CTL_Ejecuciones",
+						"dependencyConditions": [
+							"Completed"
+						]
+					},
+					{
+						"activity": "DF_CTL_Errores¿?¿??",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"enableLogging": true
+				}
 			}
 		],
 		"parameters": {
@@ -181,6 +436,11 @@
 			},
 			"nombreDirectorio": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"MensajeError": {
+				"type": "String"
 			}
 		}
 	}
