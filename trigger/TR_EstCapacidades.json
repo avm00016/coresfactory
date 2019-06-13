@@ -1,7 +1,7 @@
 {
 	"name": "TR_EstCapacidades",
 	"properties": {
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipelines": [
 			{
 				"pipelineReference": {
