@@ -2,18 +2,6 @@
 	"name": "TR_EstCapacidades",
 	"properties": {
 		"runtimeState": "Started",
-		"pipelines": [
-			{
-				"pipelineReference": {
-					"referenceName": "PL_EstCapacidades",
-					"type": "PipelineReference"
-				},
-				"parameters": {
-					"nombreFichero": "@triggerBody().fileName",
-					"nombreDirectorio": "@triggerBody().folderPath"
-				}
-			}
-		],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/input/blobs/",
