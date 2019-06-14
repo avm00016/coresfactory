@@ -9,10 +9,12 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "CAP_20190611_130826.csv",
+				"folderPath": "blobs/CAP",
 				"container": "entrada"
 			},
 			"columnDelimiter": "\t",
-			"encodingName": "UTF-16",
+			"encodingName": "UTF-8",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
