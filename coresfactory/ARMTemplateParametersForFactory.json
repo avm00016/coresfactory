@@ -11,25 +11,25 @@
 		"AzureSqlDatabase1_connectionString": {
 			"value": ""
 		},
-		"DS_BLOB_HISTORY_properties_typeProperties_fileName": {
-			"value": "@dataset().DestinationFileName"
+		"DS_BLOB_ENTRADA_properties_typeProperties_fileName": {
+			"value": "@dataset().nombreFichero"
 		},
-		"DS_BLOB_HISTORY_properties_typeProperties_folderPath": {
-			"value": "history"
+		"DS_BLOB_ENTRADA_properties_typeProperties_folderPath": {
+			"value": "@dataset().nombreDirectorio"
 		},
-		"DS_BLOB_INPUT_properties_typeProperties_fileName": {
-			"value": "@dataset().filename"
+		"DS_BLOB_HISTORICO_properties_typeProperties_fileName": {
+			"value": "@dataset().nombreFichero"
 		},
-		"DS_BLOB_INPUT_properties_typeProperties_folderPath": {
-			"value": "input"
+		"DS_BLOB_HISTORICO_properties_typeProperties_folderPath": {
+			"value": "historico"
 		},
-		"TR_EstCapacidades_properties_PL_EstCapacidades_parameters_nombreFichero": {
+		"TR_CAP_properties_PL_EstCapacidades_parameters_nombreFichero": {
 			"value": "@triggerBody().fileName"
 		},
-		"TR_EstCapacidades_properties_PL_EstCapacidades_parameters_nombreDirectorio": {
+		"TR_CAP_properties_PL_EstCapacidades_parameters_nombreDirectorio": {
 			"value": "@triggerBody().folderPath"
 		},
-		"TR_EstCapacidades_properties_typeProperties_scope": {
+		"TR_CAP_properties_typeProperties_scope": {
 			"value": "/subscriptions/5a872d64-36b9-4adf-b9c4-e6ba85cf4457/resourceGroups/CORES_Training/providers/Microsoft.Storage/storageAccounts/coresca"
 		}
 	}
