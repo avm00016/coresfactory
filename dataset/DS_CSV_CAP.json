@@ -9,7 +9,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "blobs/CAP",
 				"container": "entrada"
 			},
 			"columnDelimiter": "\t",
