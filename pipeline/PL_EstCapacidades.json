@@ -53,7 +53,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "select '/blobs/' + ficheroCarga as Prop_0 from dbo.CTL_Ejecuciones where IdEjecucion_Pipeline = '@{pipeline().RunId}'",
+							"value": "select '@{pipeline().parameters.nombreDirectorio}' + ficheroCarga as Prop_0 from dbo.CTL_Ejecuciones where IdEjecucion_Pipeline = '@{pipeline().RunId}'",
 							"type": "Expression"
 						}
 					},
@@ -175,7 +175,7 @@
 				}
 			},
 			{
-				"name": "DF_FT_Establecimientos",
+				"name": "DF_FT_EstCapacidades",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
@@ -230,11 +230,15 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_BLOB_INPUT",
+						"referenceName": "DS_BLOB_ENTRADA",
 						"type": "DatasetReference",
 						"parameters": {
-							"filename": {
+							"nombreFichero": {
 								"value": "@pipeline().parameters.nombreFichero",
+								"type": "Expression"
+							},
+							"nombreDirectorio": {
+								"value": "@pipeline().parameters.nombreDirectorio",
 								"type": "Expression"
 							}
 						}
@@ -242,10 +246,10 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_BLOB_HISTORY",
+						"referenceName": "DS_BLOB_HISTORICO",
 						"type": "DatasetReference",
 						"parameters": {
-							"DestinationFileName": {
+							"nombreFichero": {
 								"value": "@pipeline().parameters.nombreFichero",
 								"type": "Expression"
 							}
@@ -265,7 +269,7 @@
 						]
 					},
 					{
-						"activity": "DF_FT_Establecimientos",
+						"activity": "DF_FT_EstCapacidades",
 						"dependencyConditions": [
 							"Failed"
 						]
@@ -328,13 +332,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "DF_FT_Establecimientos",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "SP_CTL_Errores",
+						"activity": "DL_BorraEntrada",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -414,11 +412,17 @@
 				}
 			},
 			{
-				"name": "DL_BorraInput",
+				"name": "DL_BorraEntrada",
 				"type": "Delete",
 				"dependsOn": [
 					{
-						"activity": "SP_Update_CTL_Ejecuciones",
+						"activity": "DF_FT_EstCapacidades",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SP_CTL_Errores",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -433,11 +437,15 @@
 				},
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "DS_BLOB_INPUT",
+						"referenceName": "DS_BLOB_ENTRADA",
 						"type": "DatasetReference",
 						"parameters": {
-							"filename": {
-								"value": "@concat(pipeline().parameters.nombreDirectorio, pipeline().parameters.nombreFichero)",
+							"nombreFichero": {
+								"value": "@pipeline().parameters.nombreFichero",
+								"type": "Expression"
+							},
+							"nombreDirectorio": {
+								"value": "@pipeline().parameters.nombreDirectorio",
 								"type": "Expression"
 							}
 						}
@@ -446,6 +454,7 @@
 				}
 			}
 		],
+		"concurrency": 1,
 		"parameters": {
 			"nombreFichero": {
 				"type": "string"

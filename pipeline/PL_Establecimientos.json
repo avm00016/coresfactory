@@ -25,10 +25,10 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_BLOB_INPUT",
+						"referenceName": "DS_BLOB_ENTRADA",
 						"type": "DatasetReference",
 						"parameters": {
-							"filename": {
+							"nombreFichero": {
 								"value": "@pipeline().parameters.nombreFichero",
 								"type": "Expression"
 							}
@@ -37,10 +37,10 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_BLOB_HISTORY",
+						"referenceName": "DS_BLOB_HISTORICO",
 						"type": "DatasetReference",
 						"parameters": {
-							"DestinationFileName": {
+							"nombreFichero": {
 								"value": "@pipeline().parameters.nombreFichero",
 								"type": "Expression"
 							}

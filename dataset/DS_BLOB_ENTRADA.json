@@ -1,22 +1,28 @@
 {
-	"name": "DS_BLOB_INPUT",
+	"name": "DS_BLOB_ENTRADA",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"filename": {
+			"nombreFichero": {
+				"type": "string"
+			},
+			"nombreDirectorio": {
 				"type": "string"
 			}
 		},
 		"type": "AzureBlob",
 		"typeProperties": {
 			"fileName": {
-				"value": "@dataset().filename",
+				"value": "@dataset().nombreFichero",
 				"type": "Expression"
 			},
-			"folderPath": "input"
+			"folderPath": {
+				"value": "@dataset().nombreDirectorio",
+				"type": "Expression"
+			}
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"

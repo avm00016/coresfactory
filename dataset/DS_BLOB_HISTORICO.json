@@ -1,22 +1,22 @@
 {
-	"name": "DS_BLOB_HISTORY",
+	"name": "DS_BLOB_HISTORICO",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"DestinationFileName": {
+			"nombreFichero": {
 				"type": "string"
 			}
 		},
 		"type": "AzureBlob",
 		"typeProperties": {
 			"fileName": {
-				"value": "@dataset().DestinationFileName",
+				"value": "@dataset().nombreFichero",
 				"type": "Expression"
 			},
-			"folderPath": "history"
+			"folderPath": "historico"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
