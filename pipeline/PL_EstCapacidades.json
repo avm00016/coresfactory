@@ -113,7 +113,7 @@
 					"storedProcedureParameters": {
 						"FechaInicio": {
 							"value": {
-								"value": "@utcnow()",
+								"value": "@substring(pipeline().TriggerTime,0,19)",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -165,6 +165,10 @@
 								"value": "@pipeline().TriggerType",
 								"type": "Expression"
 							},
+							"type": "String"
+						},
+						"Estado": {
+							"value": "'EN EJECUCION'",
 							"type": "String"
 						}
 					}
@@ -233,18 +237,12 @@
 				]
 			},
 			{
-				"name": "SP_CTL_Errores",
+				"name": "SP_Insert_CTL_Errores_STG",
 				"description": "Inserta una fila rellenando varios campos",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
 						"activity": "DF_STG_EstCapacidades",
-						"dependencyConditions": [
-							"Failed"
-						]
-					},
-					{
-						"activity": "DF_FT_EstCapacidades",
 						"dependencyConditions": [
 							"Failed"
 						]
@@ -269,7 +267,7 @@
 						},
 						"FicheroCarga": {
 							"value": {
-								"value": "@concat(pipeline().parameters.nombreDirectorio,pipeline().parameters.nombreFichero)",
+								"value": "@pipeline().parameters.nombreFichero",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -311,12 +309,6 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
-					},
-					{
-						"activity": "SP_CTL_Errores",
-						"dependencyConditions": [
-							"Succeeded"
-						]
 					}
 				],
 				"policy": {
@@ -327,18 +319,18 @@
 					"secureInput": false
 				},
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Insert_CTL_Ejecuciones]",
+					"storedProcedureName": "[dbo].[Update_CTL_Ejecuciones]",
 					"storedProcedureParameters": {
-						"FechaInicio": {
+						"Estado": {
 							"value": {
-								"value": "@utcnow()",
+								"value": "@if(equals(activity('DF_STG_EstCapacidades').Status, 'Failed'), 'ERROR', if(equals(activity('DF_FT_EstCapacidades').Status, 'Failed'), 'ERROR', 'OK'))",
 								"type": "Expression"
 							},
 							"type": "String"
 						},
-						"FicheroCarga": {
+						"FechaFin": {
 							"value": {
-								"value": "@pipeline().parameters.nombreFichero",
+								"value": "@substring(utcnow(),0,19)",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -346,41 +338,6 @@
 						"IdEjecucion_Pipeline": {
 							"value": {
 								"value": "@pipeline().RunId",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
-						"IdEjecucion_Trigger": {
-							"value": {
-								"value": "@pipeline().TriggerId",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
-						"Nombre_DataFactory": {
-							"value": {
-								"value": "@pipeline().DataFactory",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
-						"Nombre_Pipeline": {
-							"value": {
-								"value": "@pipeline().Pipeline",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
-						"Nombre_Trigger": {
-							"value": {
-								"value": "@pipeline().TriggerName",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
-						"Tipo_Trigger": {
-							"value": {
-								"value": "@pipeline().TriggerType",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -399,7 +356,8 @@
 					{
 						"activity": "DF_FT_EstCapacidades",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed",
+							"Skipped"
 						]
 					}
 				],
@@ -451,6 +409,70 @@
 						"referenceName": "DF_FT_EstCapacidades",
 						"type": "DataFlowReference"
 					}
+				}
+			},
+			{
+				"name": "SP_Insert_CTL_Errores_FT",
+				"description": "Inserta una fila rellenando varios campos",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "DF_FT_EstCapacidades",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[Insert_CTL_Errores]",
+					"storedProcedureParameters": {
+						"FechaCarga": {
+							"value": {
+								"value": "@substring(utcnow(),0,19)",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"FicheroCarga": {
+							"value": {
+								"value": "@pipeline().parameters.nombreFichero",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"IdEjecucion_Activity": {
+							"value": {
+								"value": "@activity('DF_FT_EstCapacidades').ActivityRunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"IdEjecucion_Pipeline": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"MensajeError_Activity": {
+							"value": {
+								"value": "@replace(activity('DF_FT_EstCapacidades').Error.Message, '''', '')",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
