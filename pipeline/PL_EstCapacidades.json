@@ -311,6 +311,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "SP_CTL_Errores",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"policy": {
@@ -390,12 +396,6 @@
 				"name": "DL_BorraEntrada",
 				"type": "Delete",
 				"dependsOn": [
-					{
-						"activity": "SP_CTL_Errores",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
 					{
 						"activity": "DF_FT_EstCapacidades",
 						"dependencyConditions": [
