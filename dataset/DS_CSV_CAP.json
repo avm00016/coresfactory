@@ -9,7 +9,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"container": "input"
+				"container": "entrada"
 			},
 			"columnDelimiter": "\t",
 			"encodingName": "UTF-16",

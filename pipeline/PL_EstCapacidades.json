@@ -53,7 +53,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "select '@{pipeline().parameters.nombreDirectorio}' + ficheroCarga as Prop_0 from dbo.CTL_Ejecuciones where IdEjecucion_Pipeline = '@{pipeline().RunId}'",
+							"value": "SELECT REPLACE('@{pipeline().parameters.nombreDirectorio}', '/entrada', '') + ficheroCarga AS Prop_0 FROM dbo.CTL_Ejecuciones where IdEjecucion_Pipeline = '@{pipeline().RunId}'",
 							"type": "Expression"
 						}
 					},
@@ -172,31 +172,6 @@
 				"linkedServiceName": {
 					"referenceName": "AzureSqlDatabase1",
 					"type": "LinkedServiceReference"
-				}
-			},
-			{
-				"name": "DF_FT_EstCapacidades",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "DF_STG_EstCapacidades",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "DF_FT_Establecimientos",
-						"type": "DataFlowReference"
-					}
 				}
 			},
 			{
@@ -416,13 +391,13 @@
 				"type": "Delete",
 				"dependsOn": [
 					{
-						"activity": "DF_FT_EstCapacidades",
+						"activity": "SP_CTL_Errores",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					},
 					{
-						"activity": "SP_CTL_Errores",
+						"activity": "DF_FT_EstCapacidades",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -451,6 +426,31 @@
 						}
 					},
 					"enableLogging": false
+				}
+			},
+			{
+				"name": "DF_FT_EstCapacidades",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "DF_STG_EstCapacidades",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_FT_EstCapacidades",
+						"type": "DataFlowReference"
+					}
 				}
 			}
 		],

@@ -11,7 +11,7 @@
 				"type": "AzureBlobStorageLocation",
 				"fileName": "CAP_Fichero_Procesado.txt",
 				"folderPath": "control",
-				"container": "input"
+				"container": "entrada"
 			},
 			"columnDelimiter": ",",
 			"encodingName": "UTF-8",
